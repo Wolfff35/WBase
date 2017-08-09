@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      >
+        <item
+            android:id="@+id/nav_menu_item_documents"
+            android:title="Документы">
+            <menu>
+                <item
+                    android:id="@+id/nav_camer"
+                    android:title="test1">
+                </item>
+
+            </menu>
+        </item>
+        <item
+                android:title="test">
+            <menu>
+                <item
+                    android:id="@+id/nav_came"
+                    android:title="test2">
+                </item>
+
+            </menu>
+        </item>
+</menu>
