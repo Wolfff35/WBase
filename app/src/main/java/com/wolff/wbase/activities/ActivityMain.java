@@ -72,12 +72,11 @@ public class ActivityMain extends AppCompatActivity
         return true;
     }
 //===
-private void displayFragment() {
-         FragmentTransaction fragmentTransaction;
+    private void displayFragment() {
+        FragmentTransaction fragmentTransaction;
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container_main, mMainFragment);
         fragmentTransaction.commit();
-
-}
+    }
 
 }
