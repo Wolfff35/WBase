@@ -22,7 +22,7 @@ private HttpURLConnection getConnection(Context context, String typeConnection,S
     try {
         URL url = new URL(url_s);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-        String authString = getAuthorization1CBase();
+        String authString = getAuthorization1CBase(context);
         connection.setRequestProperty("Authorization","Basic "+authString);
         return connection;
     } catch (IOException e) {
