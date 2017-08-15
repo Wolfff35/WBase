@@ -1,10 +1,7 @@
 package com.wolff.wbase.datalab;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.util.Base64;
 import android.util.Log;
 
 import com.wolff.wbase.tools.PreferencesTools;
@@ -57,36 +54,9 @@ private String getStringUrl(Context context,String typeConnection, String catalo
     }
     return null;
 }
-private String getAuthorization1CBase(){
-    return null;
+private String getAuthorization1CBase(Context context){
+    PreferencesTools pref = new PreferencesTools();
+
+    return pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_LOGIN)+":"+pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_PASSWORD);
 }
-    /*public HttpURLConnection getConnection(Context context,String type,String catalog,String guidCurrentUser){
-    try {
-        String url_s;
-        if(type.equalsIgnoreCase("GET")) {
-            url_s = getBaseUrl(context) + catalog + "/?$format=json"+getFiltersForQuery(context,catalog,guidCurrentUser);
-        }else if(type.equalsIgnoreCase("PATCH")) {
-            url_s = Uri.parse(getBaseUrl(context) + catalog + "/").buildUpon().appendQueryParameter("$format", "json").build().toString();
-        }else if(type.equalsIgnoreCase("POST")){
-            url_s = Uri.parse(getBaseUrl(context) + catalog).buildUpon().build().toString();
-        }else {
-            url_s=null;
-        }
-        URL url = new URL(url_s);
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-        String authString = getAuthorization1C(context);
-        String authStringEnc = new String(Base64.encode(authString.getBytes(),0));
-        connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
-        Log.e("CONNECTION","GOOD - "+url_s);
-
-        return connection;
-    } catch (MalformedURLException e) {
-        Log.e("ERROR 1",""+e.getLocalizedMessage());
-    } catch (IOException e) {
-        Log.e("ERROR 2",""+e.getLocalizedMessage());
-    }
-    return null;
-}*/
-
 }
