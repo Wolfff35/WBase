@@ -1,0 +1,106 @@
+package com.wolff.wbase.datalab;
+
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+
+import com.wolff.wbase.tools.PreferencesTools;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+/**
+ * Created by wolff on 17.08.2017.
+ */
+
+public class OnlineConnector {
+    private static final int READ_TIMEOUT = 10000;
+    private static final int CONNECT_TIMEOUT = 15000;
+    public static final String CONNECTION_TYPE_GET = "GET";
+    public static final String CONNECTION_TYPE_PATCH = "PATCH";
+    public static final String CONNECTION_TYPE_POST = "POST";
+
+    public HttpURLConnection getConnection(Context context, String typeConnection, String url_s){
+        //for GET PATCH POST
+        //String url_s = getStringUrl(context,typeConnection,catalog,guid);
+        try {
+            URL url = new URL(url_s);
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            String authString = getAuthorization1CBase(context);
+            connection.setRequestProperty("Authorization","Basic "+authString);
+            connection.setReadTimeout(READ_TIMEOUT);
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
+            connection.setRequestMethod(typeConnection);
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            Log.e("get connection","SUCCESS");
+            return connection;
+        } catch (IOException e) {
+            Log.e("get connection","NO CONNECTION "+e.getLocalizedMessage());
+            return null;
+        }
+    }
+    private String getAuthorization1CBase(Context context){
+        if(PreferencesTools.IS_DEBUG){
+            return "wolf:1";
+        }
+        PreferencesTools pref = new PreferencesTools();
+        return pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_LOGIN)
+                +":"
+                +pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_PASSWORD);
+    }
+    private String getBaseUrl(Context context){
+        if (PreferencesTools.IS_DEBUG){
+            return "http://13.10.12.10/v83_zadacha/odata/standard.odata/";
+        }
+        PreferencesTools pref = new PreferencesTools();
+        return "http://"+pref.getStringPreference(context,PreferencesTools.PREFERENCE_SERVER_NAME)
+                +"/"+pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_NAME)
+                +"/odata/standard.odata/";
+
+    }
+
+
+    public String getStringUrl(Context context,String typeConnection, String catalog,String guid){
+        String url_s=null;
+        switch (typeConnection){
+            case CONNECTION_TYPE_GET: {
+                String selection="";
+                if(guid!=null&&guid!=""){
+                    selection = "(guid'"+guid+"')";
+                }
+                url_s= Uri.parse(getBaseUrl(context) + catalog+selection +"/")
+                        .buildUpon()
+                        .appendQueryParameter("$format", "json")
+                        .build()
+                        .toString();
+                        //+getFiltersForQuery(context,catalog);
+                //return getBaseUrl(context) + catalog + "/?$format=json"+getFiltersForQuery(context,catalog);
+            break;
+            }
+
+            case CONNECTION_TYPE_PATCH:{
+                url_s= Uri.parse(getBaseUrl(context) + catalog+"(guid'"+guid+"')"  + "/")
+                        .buildUpon()
+                        .appendQueryParameter("$format", "json")
+                        .build()
+                        .toString();
+                break;
+            }
+            case CONNECTION_TYPE_POST:{
+                url_s= Uri.parse(getBaseUrl(context) + catalog)
+                        .buildUpon()
+                        .build()
+                        .toString();
+                break;
+            }
+        }
+        return url_s;
+    }
+
+    private String getFiltersForQuery(Context context, String catalog){
+        return "";
+    }
+
+}

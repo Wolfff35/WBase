@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
  */
 
 public class PreferencesTools {
+    public static final boolean IS_DEBUG = true;
     public static final String PREFERENCE_IS_FIRST_RUN = "pref_is_first_run";
     public static final String PREFERENCE_SERVER_NAME = "pref_server_name";
     public static final String PREFERENCE_BASE_NAME = "pref_base_name";

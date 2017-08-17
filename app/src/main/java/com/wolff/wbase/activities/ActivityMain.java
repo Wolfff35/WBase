@@ -1,5 +1,7 @@
 package com.wolff.wbase.activities;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,12 +11,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.wolff.wbase.R;
+import com.wolff.wbase.datalab.OnlineDataLab;
+import com.wolff.wbase.model.WUser;
 import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
 import com.wolff.wbase.fragments.Settings_fragment;
+
+import java.util.ArrayList;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +57,12 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mMainFragment =Settings_fragment.newInstance();
         displayFragment();
+        if(PreferencesTools.IS_DEBUG) {
+            //OnlineDataLab dataLab = new OnlineDataLab();
+            //dataLab.Get_Users_task(getApplicationContext());
+            new Get_Users_task(getApplicationContext()).execute();
+
+        }
     }
 
     @Override
@@ -78,5 +91,26 @@ public class ActivityMain extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container_main, mMainFragment);
         fragmentTransaction.commit();
     }
+//==================================================================================================
+public class Get_Users_task extends AsyncTask<Void,Void,ArrayList<WUser>> {
+    private Context mContext;
+    Get_Users_task(Context context){
+        mContext=context;
+    }
+    @Override
+    protected ArrayList<WUser> doInBackground(Void... params) {
+        new OnlineDataLab().get_Users(mContext);
+        return null;
+    }
 
+    @Override
+    protected void onPostExecute(ArrayList<WUser> wUsers) {
+        super.onPostExecute(wUsers);
+        if(wUsers!=null) {
+            for (int i = 0; i < wUsers.size(); i++) {
+                Log.e("USERS", "" + wUsers.get(i).getCode() + "; " + wUsers.get(i).getDescription());
+            }
+        }
+    }
+}
 }
