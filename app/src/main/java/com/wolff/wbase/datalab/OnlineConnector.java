@@ -2,6 +2,7 @@ package com.wolff.wbase.datalab;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.wolff.wbase.tools.PreferencesTools;
@@ -29,12 +30,18 @@ public class OnlineConnector {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             String authString = getAuthorization1CBase(context);
             connection.setRequestProperty("Authorization","Basic "+authString);
-            connection.setReadTimeout(READ_TIMEOUT);
-            connection.setConnectTimeout(CONNECT_TIMEOUT);
+            //connection.setReadTimeout(READ_TIMEOUT);
+            //connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setRequestMethod(typeConnection);
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            Log.e("get connection","SUCCESS");
+            //connection.setDoOutput(true);
+            //connection.setDoInput(true);
+            Log.e("get connection","SUCCESS "+connection.getResponseCode());
+            //if (connection.getResponseCode() != HttpURLConnection.HTTP_OK
+            //        |connection.getResponseCode()!=HttpURLConnection.HTTP_ACCEPTED) {
+            int code = connection.getResponseCode();
+            if(code<200&&code>202){
+                return null;
+            }
             return connection;
         } catch (IOException e) {
             Log.e("get connection","NO CONNECTION "+e.getLocalizedMessage());
@@ -42,13 +49,16 @@ public class OnlineConnector {
         }
     }
     private String getAuthorization1CBase(Context context){
+        String authStr;
         if(PreferencesTools.IS_DEBUG){
-            return "wolf:1";
+            authStr= "wolf:1";
+        }else {
+            PreferencesTools pref = new PreferencesTools();
+            authStr= pref.getStringPreference(context, PreferencesTools.PREFERENCE_BASE_LOGIN)
+                    + ":"
+                    + pref.getStringPreference(context, PreferencesTools.PREFERENCE_BASE_PASSWORD);
         }
-        PreferencesTools pref = new PreferencesTools();
-        return pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_LOGIN)
-                +":"
-                +pref.getStringPreference(context,PreferencesTools.PREFERENCE_BASE_PASSWORD);
+        return new String(Base64.encode(authStr.getBytes(),0));
     }
     private String getBaseUrl(Context context){
         if (PreferencesTools.IS_DEBUG){
@@ -70,13 +80,14 @@ public class OnlineConnector {
                 if(guid!=null&&guid!=""){
                     selection = "(guid'"+guid+"')";
                 }
-                url_s= Uri.parse(getBaseUrl(context) + catalog+selection +"/")
+             /*   url_s= Uri.parse(getBaseUrl(context) + catalog+selection +"/")
                         .buildUpon()
                         .appendQueryParameter("$format", "json")
                         .build()
                         .toString();
+               */
                         //+getFiltersForQuery(context,catalog);
-                //return getBaseUrl(context) + catalog + "/?$format=json"+getFiltersForQuery(context,catalog);
+                url_s= getBaseUrl(context) + catalog + "/?$format=json"+getFiltersForQuery(context,catalog);
             break;
             }
 

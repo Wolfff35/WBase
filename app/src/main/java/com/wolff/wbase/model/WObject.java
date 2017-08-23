@@ -1,15 +1,41 @@
 package com.wolff.wbase.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 /**
  * Created by wolff on 16.08.2017.
  */
 
-public class WObject {
+public  class WObject implements WObjectInterface{
     private static final long serialVersionUID = 2163051469151804397L;
     private String mRef_Key;
     private boolean mDeletionMark;
     private String mCode;
     private String mDescription;
+
+    public WObject (JSONObject userJsonObject){
+        try {
+            this.setRef_Key(userJsonObject.getString("Ref_Key"));
+            this.setDescription(userJsonObject.getString("Description"));
+            this.setDeletionMark(userJsonObject.getBoolean("DeletionMark"));
+            this.setCode(userJsonObject.getString("Code"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public ArrayList<WObject> getList(JSONObject jsonObjectList){
+    return null;
+    }
+
+    public JSONObject toJson(){
+     return null; //TODO
+    }
+
+//==================================================================================================
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,4 +78,5 @@ public class WObject {
     public void setDescription(String description) {
         mDescription = description;
     }
-}
+
+ }

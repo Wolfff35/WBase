@@ -99,8 +99,8 @@ public class Get_Users_task extends AsyncTask<Void,Void,ArrayList<WUser>> {
     }
     @Override
     protected ArrayList<WUser> doInBackground(Void... params) {
-        new OnlineDataLab().get_Users(mContext);
-        return null;
+        return new OnlineDataLab().get_WUserList(mContext);
+        //return null;
     }
 
     @Override
@@ -110,6 +110,8 @@ public class Get_Users_task extends AsyncTask<Void,Void,ArrayList<WUser>> {
             for (int i = 0; i < wUsers.size(); i++) {
                 Log.e("USERS", "" + wUsers.get(i).getCode() + "; " + wUsers.get(i).getDescription());
             }
+        }else {
+            Log.e("USERS"," IS NULL");
         }
     }
 }

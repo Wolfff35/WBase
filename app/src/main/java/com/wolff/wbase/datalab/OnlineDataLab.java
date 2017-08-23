@@ -18,19 +18,22 @@ import java.util.ArrayList;
 
 public class OnlineDataLab {
     public static final String CATALOG_USERS = "Catalog_Пользователи";
+    public static final String CATALOG_TEST_DOC = "Catalog_Пользователи";
     //=================================================================================================
-    public ArrayList<WUser> get_Users(Context context){
+    public ArrayList<WUser> get_WUserList(Context context){
+       //TODO переделать на метод обьекта
+        ArrayList<WUser> users = new ArrayList<>();
         OnlineDataReceiver receiver = new OnlineDataReceiver();
         try {
             String jsonString = receiver.getUrlString(context,CATALOG_USERS,null);
             JsonParcer parcer = new JsonParcer();
             JSONObject jsonObject = new JSONObject(jsonString);
-            return parcer.parse_Users(jsonObject);
-        } catch (JSONException e) {
-            Log.e("get_Users","ERROR2 "+e.getLocalizedMessage());
-            return null;
-        }
-    }
+            users = parcer.parse_WUserList(jsonObject);
+          } catch (JSONException e) {
+              Log.e("get_WUserList","ERROR2 "+e.getLocalizedMessage());
+          }
+            return users;
+   }
 
 
 /*    private int sendDataToServer(Context context,String typeConnection,String catalog,String guid,String data){
