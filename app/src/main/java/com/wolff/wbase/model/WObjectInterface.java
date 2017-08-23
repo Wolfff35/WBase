@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 
 public interface WObjectInterface {
-    ArrayList<WObject> getList(JSONObject jsonObject);
+    //ArrayList<WObject> getList(JSONObject jsonObject);
     JSONObject toJson();
 }
