@@ -1,7 +1,5 @@
 package com.wolff.wbase.activities;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,15 +14,24 @@ import android.view.MenuItem;
 
 import com.wolff.wbase.R;
 import com.wolff.wbase.datalab.OnlineDataLab;
-import com.wolff.wbase.model.WUser;
+import com.wolff.wbase.fragments.Logo_fragment;
+import com.wolff.wbase.fragments.WTask_list_fragment;
+import com.wolff.wbase.model.catalogs.wTask.WTask;
+import com.wolff.wbase.model.catalogs.wTask.WTaskGetter;
+import com.wolff.wbase.model.catalogs.wTask.WTaskSaver;
+import com.wolff.wbase.model.catalogs.wTask.WTaskUpdater;
+import com.wolff.wbase.model.catalogs.wUser.WUser;
+import com.wolff.wbase.model.catalogs.wUser.WUserGetter;
+import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
 import com.wolff.wbase.fragments.Settings_fragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,WTask_list_fragment.WTask_list_fragment_listener {
 
     private Fragment mMainFragment;
     @Override
@@ -55,13 +62,13 @@ public class ActivityMain extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         new UITools().designNavigationMenu(getApplicationContext(),navigationView.getMenu());
         navigationView.setNavigationItemSelectedListener(this);
-        mMainFragment =Settings_fragment.newInstance();
+
+        //mMainFragment =Settings_fragment.newInstance();
+        //mMainFragment = Logo_fragment.newInstance();
+        mMainFragment = WTask_list_fragment.newInstance();
         displayFragment();
         if(PreferencesTools.IS_DEBUG) {
-            //OnlineDataLab dataLab = new OnlineDataLab();
-            //dataLab.Get_Users_task(getApplicationContext());
-            new Get_Users_task(getApplicationContext()).execute();
-
+            Debug.onCreateActivityMain(getApplicationContext());
         }
     }
 
@@ -91,28 +98,11 @@ public class ActivityMain extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container_main, mMainFragment);
         fragmentTransaction.commit();
     }
+
 //==================================================================================================
-public class Get_Users_task extends AsyncTask<Void,Void,ArrayList<WUser>> {
-    private Context mContext;
-    Get_Users_task(Context context){
-        mContext=context;
-    }
     @Override
-    protected ArrayList<WUser> doInBackground(Void... params) {
-        return new OnlineDataLab().get_WUserList(mContext);
-        //return null;
+    public void OnWTaskItemSelected(WTask task) {
+
     }
 
-    @Override
-    protected void onPostExecute(ArrayList<WUser> wUsers) {
-        super.onPostExecute(wUsers);
-        if(wUsers!=null) {
-            for (int i = 0; i < wUsers.size(); i++) {
-                Log.e("USERS", "" + wUsers.get(i).getCode() + "; " + wUsers.get(i).getDescription());
-            }
-        }else {
-            Log.e("USERS"," IS NULL");
-        }
-    }
-}
 }

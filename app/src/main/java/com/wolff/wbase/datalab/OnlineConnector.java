@@ -9,6 +9,7 @@ import com.wolff.wbase.tools.PreferencesTools;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -22,31 +23,16 @@ public class OnlineConnector {
     public static final String CONNECTION_TYPE_PATCH = "PATCH";
     public static final String CONNECTION_TYPE_POST = "POST";
 
-    public HttpURLConnection getConnection(Context context, String typeConnection, String url_s){
-        //for GET PATCH POST
-        //String url_s = getStringUrl(context,typeConnection,catalog,guid);
-        try {
+    public HttpURLConnection getConnection(Context context, String typeConnection, String url_s) throws IOException {
             URL url = new URL(url_s);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             String authString = getAuthorization1CBase(context);
             connection.setRequestProperty("Authorization","Basic "+authString);
-            //connection.setReadTimeout(READ_TIMEOUT);
-            //connection.setConnectTimeout(CONNECT_TIMEOUT);
+            connection.setReadTimeout(READ_TIMEOUT);
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setRequestMethod(typeConnection);
-            //connection.setDoOutput(true);
-            //connection.setDoInput(true);
-            Log.e("get connection","SUCCESS "+connection.getResponseCode());
-            //if (connection.getResponseCode() != HttpURLConnection.HTTP_OK
-            //        |connection.getResponseCode()!=HttpURLConnection.HTTP_ACCEPTED) {
-            int code = connection.getResponseCode();
-            if(code<200&&code>202){
-                return null;
-            }
+            connection.setDoInput(true);
             return connection;
-        } catch (IOException e) {
-            Log.e("get connection","NO CONNECTION "+e.getLocalizedMessage());
-            return null;
-        }
     }
     private String getAuthorization1CBase(Context context){
         String authStr;
@@ -80,14 +66,12 @@ public class OnlineConnector {
                 if(guid!=null&&guid!=""){
                     selection = "(guid'"+guid+"')";
                 }
-             /*   url_s= Uri.parse(getBaseUrl(context) + catalog+selection +"/")
+                url_s= Uri.parse(getBaseUrl(context) + catalog+selection +"/")
                         .buildUpon()
                         .appendQueryParameter("$format", "json")
                         .build()
-                        .toString();
-               */
-                        //+getFiltersForQuery(context,catalog);
-                url_s= getBaseUrl(context) + catalog + "/?$format=json"+getFiltersForQuery(context,catalog);
+                        .toString()
+                        +getFiltersForQuery(context,catalog);
             break;
             }
 
