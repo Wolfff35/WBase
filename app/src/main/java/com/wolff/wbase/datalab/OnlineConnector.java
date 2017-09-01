@@ -37,7 +37,7 @@ public class OnlineConnector {
     private String getAuthorization1CBase(Context context){
         String authStr;
         if(PreferencesTools.IS_DEBUG){
-            authStr= "wolf:1";
+            authStr= "wolf:";
         }else {
             PreferencesTools pref = new PreferencesTools();
             authStr= pref.getStringPreference(context, PreferencesTools.PREFERENCE_BASE_LOGIN)
@@ -48,7 +48,7 @@ public class OnlineConnector {
     }
     private String getBaseUrl(Context context){
         if (PreferencesTools.IS_DEBUG){
-            return "http://13.10.12.10/v83_zadacha/odata/standard.odata/";
+            return "http://13.10.12.10/v83_idea_wolf_work/odata/standard.odata/";
         }
         PreferencesTools pref = new PreferencesTools();
         return "http://"+pref.getStringPreference(context,PreferencesTools.PREFERENCE_SERVER_NAME)

@@ -6,18 +6,18 @@
             android:title="Документы">
             <menu>
                 <item
-                    android:id="@+id/nav_camer"
+                    android:id="@+id/nav_menu_item_PKO"
                     android:title="test1">
                 </item>
 
             </menu>
         </item>
         <item
-                android:title="test">
+                android:title="Справочники">
             <menu>
                 <item
-                    android:id="@+id/nav_came"
-                    android:title="test2">
+                    android:id="@+id/nav_menu_item_Organization"
+                    android:title="Организации">
                 </item>
 
             </menu>

@@ -16,11 +16,11 @@ import static com.wolff.wbase.tools.DateFormatTools.DATE_FORMAT_STR;
  * Created by wolff on 30.08.2017.
  */
 
-public abstract class AWObjectSaver {
+public abstract class AWObject_saver {
 
-    public abstract boolean addNewItem(Context context);
+    public abstract boolean addNewItem();
 
-    protected abstract String getDataToPost(Context context);
+    protected abstract String getDataToPost();
 
     protected  String formatXmlHeader(Context context,String sObjectType){
         InputStream is_header = context.getResources().openRawResource(R.raw.post_query_task_header);

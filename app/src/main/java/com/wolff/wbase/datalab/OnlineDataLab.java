@@ -23,7 +23,7 @@ import static com.wolff.wbase.datalab.OnlineConnector.CONNECTION_TYPE_POST;
 public class OnlineDataLab {
     public static final String CATALOG_USERS = "Catalog_Пользователи";
     public static final String CATALOG_TASKS = "Catalog_Tasks";
-    public static final String CATALOG_TEST_DOC = "Document_Документ_Тест";
+    public static final String CATALOG_ORGANIZATION = "Catalog_Организации";
 
     private static OnlineDataLab sDataLab;
 
@@ -87,9 +87,9 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
     try {
         return new Post_ObjectOnline_task(mContext).execute(typeConnection,sObjectType,guid,data).get();
     } catch (InterruptedException e) {
-        //e.printStackTrace();
+        e.printStackTrace();
     } catch (ExecutionException e) {
-        //e.printStackTrace();
+        e.printStackTrace();
     }
     return false;
 }
@@ -108,7 +108,7 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
 
     private boolean post_ObjectOnline(Context  context,String typeConnection,String sObjectType, String guid, String s_data){
         boolean isSuccess=false;
-        Log.e("post_ObjectOnline","BEGIN");
+        //Log.e("post_ObjectOnline","BEGIN");
         OnlineConnector connector = new OnlineConnector();
         String s_url;
         if(typeConnection.equalsIgnoreCase(CONNECTION_TYPE_POST)) {
@@ -123,13 +123,16 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
             HttpURLConnection connection = connector.getConnection(context, typeConnection,s_url);
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Length", "" + Integer.toString(s_data.getBytes().length));
-            Log.e("post_ObjectOnline","1");
+            //Log.e("post_ObjectOnline","1");
             OutputStream os = new BufferedOutputStream(connection.getOutputStream());
             os.write(s_data.getBytes());
             os.flush();
             connection.connect();
-            Log.e("post_ObjectOnline","code = "+connection.getResponseCode());
-            isSuccess=true;
+            int code = connection.getResponseCode();
+            //Log.e("post_ObjectOnline","code = "+connection.getResponseCode());
+            if((code>=200)&&(code<=201)) {
+                isSuccess = true;
+            }
             connection.disconnect();
         } catch (IOException e) {
             Log.e("post_ObjectOnline","Что-то пошло не так "+e.getLocalizedMessage());

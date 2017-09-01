@@ -13,25 +13,17 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.datalab.OnlineDataLab;
-import com.wolff.wbase.fragments.Logo_fragment;
-import com.wolff.wbase.fragments.WTask_list_fragment;
-import com.wolff.wbase.model.catalogs.wTask.WTask;
-import com.wolff.wbase.model.catalogs.wTask.WTaskGetter;
-import com.wolff.wbase.model.catalogs.wTask.WTaskSaver;
-import com.wolff.wbase.model.catalogs.wTask.WTaskUpdater;
-import com.wolff.wbase.model.catalogs.wUser.WUser;
-import com.wolff.wbase.model.catalogs.wUser.WUserGetter;
+import com.wolff.wbase.fragments.WOrganization_list_fragment;
+import com.wolff.wbase.model.catalogs.wOrganization.WOrganization;
+import com.wolff.wbase.tools.DateFormatTools;
 import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
-import com.wolff.wbase.fragments.Settings_fragment;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,WTask_list_fragment.WTask_list_fragment_listener {
+        implements NavigationView.OnNavigationItemSelectedListener,WOrganization_list_fragment.WOrganization_list_fragment_listener {
 
     private Fragment mMainFragment;
     @Override
@@ -65,10 +57,19 @@ public class ActivityMain extends AppCompatActivity
 
         //mMainFragment =Settings_fragment.newInstance();
         //mMainFragment = Logo_fragment.newInstance();
-        mMainFragment = WTask_list_fragment.newInstance();
-        displayFragment();
         if(PreferencesTools.IS_DEBUG) {
+            Date start = new Date();
+            Log.e("DEBUG","BEGIN "+new DateFormatTools().dateToString(start,DateFormatTools.DATE_FORMAT_VID_FULL));
+            //------------------------------------------------------
             Debug.onCreateActivityMain(getApplicationContext());
+
+            mMainFragment = WOrganization_list_fragment.newInstance();
+            displayFragment();
+            //------------------------------------------------------
+            Date endDate = new Date();
+            Log.e("DEBUG","END "+new DateFormatTools().dateToString(endDate,DateFormatTools.DATE_FORMAT_VID_FULL)+"; time - " +((endDate.getTime()-start.getTime()))+" m/sec");
+
+
         }
     }
 
@@ -100,9 +101,9 @@ public class ActivityMain extends AppCompatActivity
     }
 
 //==================================================================================================
+
     @Override
-    public void OnWTaskItemSelected(WTask task) {
+    public void OnWOrganizationItemSelected(WOrganization organization) {
 
     }
-
 }

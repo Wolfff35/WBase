@@ -8,31 +8,33 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wTask.WTask;
+import com.wolff.wbase.model.catalogs.wOrganization.WOrganization;
 
 import java.util.ArrayList;
 
 /**
- * Created by wolff on 31.08.2017.
+ * Created by wolff on 01.09.2017.
  */
 
-public class WTask_list_item_adapter extends BaseAdapter {
+public class WOrganization_list_item_adapter extends BaseAdapter {
     private LayoutInflater mInflater;
-    private ArrayList<WTask> mWTaskList;
+    private ArrayList<WOrganization> mList;
 
-    public WTask_list_item_adapter(Context context, ArrayList<WTask>taskList){
-        mWTaskList = taskList;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public WOrganization_list_item_adapter(Context context, ArrayList<WOrganization>list){
+        this.mList = list;
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return mWTaskList.size();
+        if(mList!=null) {
+            return mList.size();
+        }else return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return mWTaskList.get(position);
+        return mList.get(position);
     }
 
     @Override
@@ -44,11 +46,11 @@ public class WTask_list_item_adapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view==null){
-            view = mInflater.inflate(R.layout.wtask_list_item_adapter,parent,false);
+            view = mInflater.inflate(R.layout.worganization_list_item_adapter,parent,false);
         }
         TextView tvDescription = (TextView) view.findViewById(R.id.tvDescription);
-        WTask task = (WTask)getItem(position);
-        tvDescription.setText(task.getDescription());
+        WOrganization org = (WOrganization) getItem(position);
+        tvDescription.setText(org.getDescription());
         return view;
     }
 }
