@@ -16,11 +16,11 @@ import java.util.ArrayList;
  * Created by wolff on 01.09.2017.
  */
 
-public class WOrganization_list_item_adapter extends BaseAdapter {
+public class _WOrganization_list_item_adapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<WOrganization> mList;
 
-    public WOrganization_list_item_adapter(Context context, ArrayList<WOrganization>list){
+    public _WOrganization_list_item_adapter(Context context, ArrayList<WOrganization>list){
         this.mList = list;
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
