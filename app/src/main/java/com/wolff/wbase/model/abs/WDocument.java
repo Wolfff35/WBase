@@ -1,9 +1,16 @@
 package com.wolff.wbase.model.abs;
 
+import android.content.Context;
+
 import com.wolff.wbase.model.abs.WObject;
+import com.wolff.wbase.model.metadata.MetaDocuments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.DATE;
+import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.NUMBER;
+import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.POSTED;
 
 
 /**
@@ -14,12 +21,15 @@ public class WDocument extends WObject {
     private String mNumber;
     private String mDate;
     private boolean mPosted; //проведен
-    public WDocument(JSONObject jsonObject) {
-        super(jsonObject);
+    //public WDocument(){
+    //    super();
+    //}
+     public WDocument(Context context,JSONObject jsonObject) {
+        super(context,jsonObject);
         try {
-            this.setDate(jsonObject.getString("Date"));
-            this.setNumber(jsonObject.getString("Number"));
-            this.setPosted(jsonObject.getBoolean("Posted"));
+            this.setDate(jsonObject.getString(DATE));
+            this.setNumber(jsonObject.getString(NUMBER));
+            this.setPosted(jsonObject.getBoolean(POSTED));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -30,9 +40,9 @@ public class WDocument extends WObject {
         JSONObject item = super.toJson(onlyDeletionMark);
         if(!onlyDeletionMark) {
             try {
-                item.put("Date", mDate);
-                item.put("Number", mNumber);
-                item.put("Posted", mPosted);
+                item.put(DATE, mDate);
+                item.put(NUMBER, mNumber);
+                item.put(POSTED, mPosted);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

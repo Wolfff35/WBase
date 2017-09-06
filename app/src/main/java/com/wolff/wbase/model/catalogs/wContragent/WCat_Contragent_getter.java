@@ -1,10 +1,12 @@
-package com.wolff.wbase.model.catalogs.wOrganization;
+package com.wolff.wbase.model.catalogs.wContragent;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.wolff.wbase.datalab.OnlineDataLab;
+import com.wolff.wbase.datalab.OnlineDataSender;
 import com.wolff.wbase.model.abs.AWObject_getter;
+import com.wolff.wbase.model.abs.Const;
+import com.wolff.wbase.model.metadata.MetaCatalogs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,38 +14,39 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.wolff.wbase.datalab.OnlineDataLab.CATALOG_ORGANIZATION;
 import static com.wolff.wbase.model.abs.Const.NULL_REF;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.ISFOLDER;
 
 /**
- * Created by wolff on 01.09.2017.
+ * Created by wolff on 04.09.2017.
  */
 
-public class WOrganization_getter extends AWObject_getter {
+public class WCat_Contragent_getter extends AWObject_getter {
     private String mObjectType;
     private Context mContext;
-    public WOrganization_getter(Context context){
-        this.mObjectType = CATALOG_ORGANIZATION;
+
+    public WCat_Contragent_getter(Context context){
+        this.mObjectType = MetaCatalogs.MContragent.CATALOG_NAME;
         this.mContext = context;
     }
     @Override
-    public WOrganization getItemByGuid(String guid) {
+    public WCat_Contragent getItemByGuid(String guid) {
         if(guid.equalsIgnoreCase(NULL_REF)){
             return null;
         }
-        OnlineDataLab dataLab = OnlineDataLab.get(mContext);
+        OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         JSONObject jsonTasks = dataLab.getObjectOnline(mObjectType,guid);
         if (jsonTasks!=null) {
-            return new WOrganization(mContext, jsonTasks);
+            return new WCat_Contragent(mContext,jsonTasks);
         }else {
             return null;
         }
     }
 
     @Override
-    public ArrayList<WOrganization> getList() {
+    public ArrayList<WCat_Contragent> getList() {
         try {
-            OnlineDataLab dataLab = OnlineDataLab.get(mContext);
+            OnlineDataSender dataLab = OnlineDataSender.get(mContext);
             JSONObject jsonObject = dataLab.getObjectOnline(mObjectType,null);
             if(jsonObject!=null) {
                 return getListFromJson(jsonObject);
@@ -57,15 +60,17 @@ public class WOrganization_getter extends AWObject_getter {
     }
 
     @Override
-    protected ArrayList<WOrganization> getListFromJson(JSONObject jsonObjectList) throws JSONException {
-        ArrayList<WOrganization> items = new ArrayList<>();
-        JSONArray jsonArray = jsonObjectList.getJSONArray("value");
+    protected ArrayList<WCat_Contragent> getListFromJson(JSONObject jsonObjectList) throws JSONException {
+        ArrayList<WCat_Contragent> items = new ArrayList<>();
+        JSONArray jsonArray = jsonObjectList.getJSONArray(Const.JSON_SEPARATOR);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            items.add(new WOrganization(mContext,jsonObject));
+            boolean isFolder = jsonObject.getBoolean(ISFOLDER);
+            if(!isFolder) {
+                items.add(new WCat_Contragent(mContext,jsonObject));
+            }
         }
         Log.e("ORG LIST"," read "+items.size()+" items");
         return items;
     }
 }
-

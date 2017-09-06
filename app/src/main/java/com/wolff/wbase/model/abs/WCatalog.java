@@ -1,8 +1,13 @@
 package com.wolff.wbase.model.abs;
 
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.CODE;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.DESCRIPTION;
 
 /**
  * Created by wolff on 28.08.2017.
@@ -16,11 +21,11 @@ public class WCatalog extends WObject {
         super();
     }
 
-    public WCatalog(JSONObject userJsonObject) {
-        super(userJsonObject);
+    public WCatalog(Context context, JSONObject userJsonObject) {
+        super(context,userJsonObject);
         try {
-            this.setDescription(userJsonObject.getString("Description"));
-            this.setCode(userJsonObject.getString("Code"));
+            this.setDescription(userJsonObject.getString(DESCRIPTION));
+            this.setCode(userJsonObject.getString(CODE));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -32,8 +37,8 @@ public class WCatalog extends WObject {
         JSONObject item = super.toJson(onlyDeletionMark);
         if(!onlyDeletionMark) {
             try {
-                item.put("Code", mCode);
-                item.put("Description", mDescription);
+                item.put(CODE, mCode);
+                item.put(DESCRIPTION, mDescription);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -1,23 +1,29 @@
 package com.wolff.wbase.model.abs;
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.DELETION_MARK;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.REF_KEY;
 
 /**
  * Created by wolff on 16.08.2017.
  */
 
-public abstract class WObject extends AWObject {
+public abstract class WObject extends AWObject implements Serializable{
     private static final long serialVersionUID = 2163051469151804397L;
     private String mRef_Key;
     private boolean mDeletionMark;
 
     public WObject(){}
-
-    public WObject (JSONObject userJsonObject){
+    public WObject (Context context,JSONObject userJsonObject){
         try {
-            this.setRef_Key(userJsonObject.getString("Ref_Key"));
-            this.setDeletionMark(userJsonObject.getBoolean("DeletionMark"));
+            this.setRef_Key(userJsonObject.getString(REF_KEY));
+            this.setDeletionMark(userJsonObject.getBoolean(DELETION_MARK));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -28,7 +34,7 @@ public abstract class WObject extends AWObject {
     public JSONObject toJson(boolean onlyDeletionMark) {
         JSONObject item = new JSONObject();
         try {
-            item.put("DeletionMark",mDeletionMark);
+            item.put(DELETION_MARK,mDeletionMark);
 
         }catch (JSONException e){
             e.printStackTrace();

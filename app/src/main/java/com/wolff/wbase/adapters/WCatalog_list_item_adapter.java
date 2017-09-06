@@ -1,6 +1,5 @@
 package com.wolff.wbase.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,8 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wOrganization.WOrganization;
+import com.wolff.wbase.model.abs.WCatalog;
+import com.wolff.wbase.tools.Debug;
 
 import java.util.ArrayList;
 
@@ -19,20 +19,20 @@ import java.util.ArrayList;
  * Created by wolff on 02.09.2017.
  */
 
-public class WOrg_list_item_adapter extends BaseAdapter implements Filterable {
+public class WCatalog_list_item_adapter extends BaseAdapter implements Filterable {
 
-    private Activity activity;
-    private ListFilter fFilter;
-    private ArrayList<WOrganization> fullList;
-    private ArrayList<WOrganization> filteredList;
+   private LayoutInflater mInflater;
+   private ListFilter fFilter;
+   private ArrayList<WCatalog> fullList;
+   private ArrayList<WCatalog> filteredList;
 
-    public WOrg_list_item_adapter(Activity activity, ArrayList<WOrganization> fullList) {
-        this.activity = activity;
-        this.fullList = fullList;
-        this.filteredList = fullList;
+   public WCatalog_list_item_adapter(Context context, ArrayList<WCatalog> fullList) {
+       this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+       this.fullList = fullList;
+       this.filteredList = fullList;
 
-        getFilter();
-    }
+       getFilter();
+   }
 
     @Override
     public int getCount() {
@@ -56,17 +56,16 @@ public class WOrg_list_item_adapter extends BaseAdapter implements Filterable {
         // A ViewHolder keeps references to children views to avoid unnecessary calls
         // to findViewById() on each row.
         final ViewHolder holder;
-        final WOrganization user = (WOrganization) getItem(position);
+        final WCatalog item = (WCatalog) getItem(position);
 
         if (view == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(R.layout.worganization_list_item_adapter, parent, false);
+            view = mInflater.inflate(R.layout.wcat_organization_list_item_adapter, parent, false);
 
             holder = new ViewHolder();
             holder.tvCode = (TextView)view.findViewById(R.id.tvCode);
             holder.tvDescription = (TextView)view.findViewById(R.id.tvDescription);
-            holder.tvCode.setText(user.getCode());
-            holder.tvDescription.setText(user.getDescription());
+            holder.tvCode.setText(item.getCode());
+            holder.tvDescription.setText(item.getDescription());
             view.setTag(holder);
         } else {
              //get view holder back
@@ -74,8 +73,8 @@ public class WOrg_list_item_adapter extends BaseAdapter implements Filterable {
         }
 
         // bind text with view holder content view for efficient use
-        holder.tvCode.setText(user.getCode());
-        holder.tvDescription.setText(user.getDescription());
+        holder.tvCode.setText(item.getCode());
+        holder.tvDescription.setText(item.getDescription());
 
         return view;
     }
@@ -100,10 +99,10 @@ public class WOrg_list_item_adapter extends BaseAdapter implements Filterable {
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults filterResults = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
-                ArrayList<WOrganization> tempList = new ArrayList<WOrganization>();
+                ArrayList<WCatalog> tempList = new ArrayList<WCatalog>();
 
                 // search content in friend list
-                for (WOrganization user : fullList) {
+                for (WCatalog user : fullList) {
                     if (user.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         tempList.add(user);
                     }else if(user.getCode().toLowerCase().contains(constraint.toString().toLowerCase())){
@@ -117,14 +116,14 @@ public class WOrg_list_item_adapter extends BaseAdapter implements Filterable {
                 filterResults.count = fullList.size();
                 filterResults.values = fullList;
             }
-
+            Debug.Log("FILTER RESULTS","Count item = "+filterResults.count);
             return filterResults;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredList = (ArrayList<WOrganization>) results.values;
+            filteredList = (ArrayList<WCatalog>) results.values;
             notifyDataSetChanged();
         }
     }

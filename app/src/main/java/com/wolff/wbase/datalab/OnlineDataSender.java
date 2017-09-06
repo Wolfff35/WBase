@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.wolff.wbase.tools.Debug;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,23 +22,22 @@ import static com.wolff.wbase.datalab.OnlineConnector.CONNECTION_TYPE_POST;
  * Created by wolff on 10.08.2017.
  */
 
-public class OnlineDataLab {
-    public static final String CATALOG_USERS = "Catalog_Пользователи";
-    public static final String CATALOG_TASKS = "Catalog_Tasks";
-    public static final String CATALOG_ORGANIZATION = "Catalog_Организации";
+public class OnlineDataSender {
+    //public static final String CATALOG_USERS = "Catalog_Пользователи";
+    //public static final String CATALOG_TASKS = "Catalog_Tasks";
 
-    private static OnlineDataLab sDataLab;
+    private static OnlineDataSender sDataLab;
 
     private Context mContext;
 
-    public static OnlineDataLab get(Context context){
+    public static OnlineDataSender get(Context context){
         if(sDataLab==null){
-            sDataLab = new OnlineDataLab(context);
+            sDataLab = new OnlineDataSender(context);
         }
         return sDataLab;
     }
 
-    private OnlineDataLab(Context context){
+    private OnlineDataSender(Context context){
         mContext=context;
 
     }
@@ -118,6 +119,7 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
         }else {
             s_url=null;
         }
+        Debug.Log("post_ObjectOnline","URL = "+s_url);
         //HttpURLConnection connection = null;
         try {
             HttpURLConnection connection = connector.getConnection(context, typeConnection,s_url);
@@ -132,10 +134,12 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
             //Log.e("post_ObjectOnline","code = "+connection.getResponseCode());
             if((code>=200)&&(code<=201)) {
                 isSuccess = true;
+            }else {
+                Debug.Log("post_ObjectOnline","requestCode = "+code);
             }
             connection.disconnect();
         } catch (IOException e) {
-            Log.e("post_ObjectOnline","Что-то пошло не так "+e.getLocalizedMessage());
+            Debug.Log("post_ObjectOnline","Что-то пошло не так "+e.getLocalizedMessage());
         }finally {
         }
         return isSuccess;

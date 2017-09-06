@@ -1,12 +1,7 @@
 package com.wolff.wbase.tools;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
-
-import com.wolff.wbase.fragments.WOrganization_list_fragment;
-import com.wolff.wbase.model.catalogs.wOrganization.WOrganization;
-import com.wolff.wbase.model.catalogs.wOrganization.WOrganization_saver;
 
 import java.util.Date;
 
@@ -15,11 +10,29 @@ import java.util.Date;
  */
 
 public class Debug {
+    private static Date startTime;
+    private static String tagg;
+    public static void start(String tag){
+        startTime = new Date();
+        tagg=tag;
+        Log.e("DEBUG","BEGIN "+tag+" "+new DateFormatTools().dateToString(startTime,DateFormatTools.DATE_FORMAT_VID_FULL));
+
+    }
+    public static void stop(){
+        Date endDate = new Date();
+        Log.e("DEBUG","END "+tagg+" "+new DateFormatTools().dateToString(endDate,DateFormatTools.DATE_FORMAT_VID_FULL)+"; time - " +((endDate.getTime()-startTime.getTime()))+" m/sec");
+
+    }
+
+    public static void Log(String tag,String msg){
+        if(PreferencesTools.IS_DEBUG) {
+            Log.e(tag, msg);
+        }
+    }
     public static void onCreateActivityMain(Context context){
 /*         for (int i=0;i<5000;i++){
-            WOrganization org = new WOrganization();
             org.setDescription("Org - "+new DateFormatTools().dateToString(new Date(),DateFormatTools.DATE_FORMAT_VID_FULL)+" - "+i);
-            WOrganization_saver saver = new WOrganization_saver(context,org);
+            WCat_Organization_saver saver = new WCat_Organization_saver(context,org);
             if(saver.addNewItem()) {
                 Log.i("COUNTER", " = " + i);
             }

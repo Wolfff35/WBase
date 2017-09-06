@@ -1,5 +1,6 @@
 package com.wolff.wbase.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,21 +10,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.fragments.WOrganization_list_fragment;
-import com.wolff.wbase.model.catalogs.wOrganization.WOrganization;
-import com.wolff.wbase.tools.DateFormatTools;
-import com.wolff.wbase.tools.Debug;
+import com.wolff.wbase.fragments.Logo_fragment;
+import com.wolff.wbase.fragments.WCat_Organization_list_fragment;
+import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
 import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
 
-import java.util.Date;
-
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,WOrganization_list_fragment.WOrganization_list_fragment_listener {
+        implements NavigationView.OnNavigationItemSelectedListener,WCat_Organization_list_fragment.WOrganization_list_fragment_listener {
 
     private Fragment mMainFragment;
     @Override
@@ -56,20 +53,8 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //mMainFragment =Settings_fragment.newInstance();
-        //mMainFragment = Logo_fragment.newInstance();
+        mMainFragment = Logo_fragment.newInstance();
         if(PreferencesTools.IS_DEBUG) {
-            Date start = new Date();
-            Log.e("DEBUG","BEGIN "+new DateFormatTools().dateToString(start,DateFormatTools.DATE_FORMAT_VID_FULL));
-            //------------------------------------------------------
-            Debug.onCreateActivityMain(getApplicationContext());
-
-            mMainFragment = WOrganization_list_fragment.newInstance();
-            displayFragment();
-            //------------------------------------------------------
-            Date endDate = new Date();
-            Log.e("DEBUG","END "+new DateFormatTools().dateToString(endDate,DateFormatTools.DATE_FORMAT_VID_FULL)+"; time - " +((endDate.getTime()-start.getTime()))+" m/sec");
-
-
         }
     }
 
@@ -87,7 +72,18 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        switch (id){
+            case R.id.nav_menu_item_Organization: {
+                mMainFragment = WCat_Organization_list_fragment.newInstance();
+                displayFragment();
+                break;
+            }
+            case R.id.nav_menu_item_PKO:{
 
+                break;
+            }
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -103,7 +99,8 @@ public class ActivityMain extends AppCompatActivity
 //==================================================================================================
 
     @Override
-    public void OnWOrganizationItemSelected(WOrganization organization) {
-
+    public void OnWOrganizationItemSelected(WCat_Organization organization) {
+        Intent intent = WOrganization_item_activity.newIntent(getApplicationContext(),organization);
+        startActivity(intent);
     }
 }

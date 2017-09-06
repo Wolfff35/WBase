@@ -6,17 +6,18 @@
               android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <SearchView
             android:id="@+id/etSearchItem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:ems="8"
             android:inputType="textPersonName"
-            android:text="Name"/>
+            android:orientation="horizontal"/>
 
     </LinearLayout>
 

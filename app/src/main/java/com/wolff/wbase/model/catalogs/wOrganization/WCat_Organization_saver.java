@@ -2,31 +2,35 @@ package com.wolff.wbase.model.catalogs.wOrganization;
 
 import android.content.Context;
 
-import com.wolff.wbase.datalab.OnlineDataLab;
+import com.wolff.wbase.datalab.OnlineDataSender;
 import com.wolff.wbase.model.abs.AWObject_saver;
 import com.wolff.wbase.tools.StringConvertTools;
 
 import static com.wolff.wbase.datalab.OnlineConnector.CONNECTION_TYPE_POST;
-import static com.wolff.wbase.datalab.OnlineDataLab.CATALOG_ORGANIZATION;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.CODE;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.DESCRIPTION;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.DELETION_MARK;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MOrganization.CATALOG_NAME;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MOrganization.HEAD.CONTRAGENT_KEY;
 
 /**
  * Created by wolff on 01.09.2017.
  */
 
-public class WOrganization_saver extends AWObject_saver {
-    private WOrganization mWOrganization;
+public class WCat_Organization_saver extends AWObject_saver {
+    private WCat_Organization mWOrganization;
     private Context mContext;
 
-    private String mObjectType = CATALOG_ORGANIZATION;
+    private String mObjectType = CATALOG_NAME;
 
-    public WOrganization_saver(Context context,WOrganization organization){
+    public WCat_Organization_saver(Context context, WCat_Organization organization){
         mWOrganization=organization;
         mContext = context;
     }
 
     @Override
     public boolean addNewItem(){
-        OnlineDataLab dataLab = OnlineDataLab.get(mContext);
+        OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         String s_data = getDataToPost();
         return dataLab.postObjectOnline(CONNECTION_TYPE_POST,mObjectType,mWOrganization.getRef_Key(),s_data);
 
@@ -53,12 +57,12 @@ public class WOrganization_saver extends AWObject_saver {
     protected String formatXmlBody() {
         StringBuffer sb = new StringBuffer();
 
-        StringConvertTools.addFieldToXml(sb, "Code", mWOrganization.getCode());
-        StringConvertTools.addFieldToXml(sb, "Description", mWOrganization.getDescription());
+        StringConvertTools.addFieldToXml(sb, CODE, mWOrganization.getCode());
+        StringConvertTools.addFieldToXml(sb, DESCRIPTION, mWOrganization.getDescription());
         if (mWOrganization.getContragent() != null) {
-            StringConvertTools.addFieldToXml(sb, "Контрагент_Key", mWOrganization.getContragent().getRef_Key());
+            StringConvertTools.addFieldToXml(sb, CONTRAGENT_KEY, mWOrganization.getContragent().getRef_Key());
         }
-        StringConvertTools.addFieldToXml(sb, "DeletionMark", String.valueOf(mWOrganization.isDeletionMark()));
+        StringConvertTools.addFieldToXml(sb, DELETION_MARK, String.valueOf(mWOrganization.isDeletionMark()));
         return sb.toString();
     }
 
