@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.tools;
 
 import com.wolff.wbase.tools.StringConvertTools;
 

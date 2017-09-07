@@ -29,6 +29,7 @@ public class WCatalog_list_fragment extends Fragment implements SearchView.OnQue
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
        }
     @Nullable
     @Override

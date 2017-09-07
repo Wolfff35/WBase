@@ -61,6 +61,9 @@ public class SelectView extends LinearLayout {
     public void setOnClickListener_choose(OnClickListener listener){
         btnSelSelect.setOnClickListener(listener);
     }
+    public void setOnClickListener_clear(OnClickListener listener){
+        btnSelClear.setOnClickListener(listener);
+    }
     //-------------------------------------------------------------------------------------------------
 
      private void initComponent() {
@@ -70,9 +73,6 @@ public class SelectView extends LinearLayout {
          btnSelClear = (ImageButton) findViewById(R.id.btnSelClear);
          tvSelDescription = (TextView) findViewById(R.id.tvSelDescription);
          tvSelLabel = (TextView) findViewById(R.id.tvSelLabel);
-
-         //btnSelSelect.setOnClickListener(selectListener);
-         btnSelClear.setOnClickListener(clearListener);
 
          updateFields();
          updateVisible();
@@ -92,12 +92,4 @@ public class SelectView extends LinearLayout {
         }
     }
 
-    private OnClickListener clearListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mItem=null;
-            updateVisible();
-            updateFields();
-        }
-    };
 }

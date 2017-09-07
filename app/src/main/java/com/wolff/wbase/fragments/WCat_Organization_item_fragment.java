@@ -18,8 +18,6 @@ import com.wolff.wbase.dialogs.WCatalog_list_dialog;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
 import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_saver;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_updater;
 import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.custom_views.SelectView;
 
@@ -69,15 +67,21 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
         svContragent.setLabel("Контрагент");
         svContragent.setWCatalogItem(mWOrganization.getContragent());
         svContragent.setOnClickListener_choose(chooseListener);
+        svContragent.setOnClickListener_clear(clearListener);
 
         evCode.setLabel("Код");
         evCode.setText(mWOrganization.getCode());
         evCode.setEnabled(false);
-        //evCode.addTextChangedListener(textChangedListener);
 
         evDescription.setLabel("Наименование");
         evDescription.setText(mWOrganization.getDescription());
         evDescription.addTextChangedListener(textChangedListener);
+
+        if(mIsNewItem){
+            evCode.setVisibility(View.INVISIBLE);
+        }else {
+            evCode.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -88,7 +92,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
             switch (requestCode) {
                 case DIALOG_REQUEST_CONTRAGENT:
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
-                    WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItemByGuid(guid);
+                    WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
                     mWOrganization.setContragent(contragent);
                     svContragent.setWCatalogItem(mWOrganization.getContragent());
                     mIsDataChanged=true;
@@ -107,6 +111,15 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
             DialogFragment dialogFragment = new WCatalog_list_dialog();
             dialogFragment.setTargetFragment(WCat_Organization_item_fragment.this,DIALOG_REQUEST_CONTRAGENT);
             dialogFragment.show(getFragmentManager(),dialogFragment.getClass().getName());
+        }
+    };
+    private View.OnClickListener clearListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mWOrganization.setContragent(null);
+            svContragent.setWCatalogItem(null);
+            mIsDataChanged=true;
+            setOptionsMenuVisibility();
         }
     };
     private TextWatcher textChangedListener = new TextWatcher() {
@@ -131,8 +144,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
     @Override
     protected void saveItem() {
         updateData();
-        WCat_Organization_saver saver = new WCat_Organization_saver(getContext(),mWOrganization);
-        boolean result = saver.addNewItem();
+        boolean result = mWOrganization.addNewItem();
         Debug.Log("sveItem","SAVE = "+result);
         if(result){
             getActivity().finish();
@@ -146,8 +158,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
     @Override
     protected void updateItem() {
         updateData();
-        WCat_Organization_updater updater = new WCat_Organization_updater(getContext(),mWOrganization);
-        boolean result = updater.updateItem();
+        boolean result = mWOrganization.updateItem();
         Debug.Log("updateItem","UPDATE = "+result);
         if(result){
             getActivity().finish();
@@ -159,8 +170,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
 
     @Override
     protected void deleteItem() {
-        WCat_Organization_updater updater = new WCat_Organization_updater(getContext(),mWOrganization);
-        boolean result = updater.deleteItem();
+        boolean result = mWOrganization.deleteItem();
         Debug.Log("deleteItem","DELETE = "+result);
         if(result){
             getActivity().finish();
@@ -179,6 +189,5 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
         super.setOptionsMenuVisibility();
         MenuItem it_del = mOptionsMenu.findItem(R.id.action_item_delete);
         it_del.setVisible(!mWOrganization.isDeletionMark());
-
-    }
+     }
 }

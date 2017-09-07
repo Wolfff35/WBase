@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 
 public abstract class AWObject_getter {
-    public abstract WObject getItemByGuid(String guid);
-    public abstract ArrayList getList();
+    public abstract WObject getItem(String guid);
+    public abstract ArrayList getList(String sTypeObject);
     protected abstract ArrayList getListFromJson(JSONObject jsonObjectList) throws JSONException;
 }

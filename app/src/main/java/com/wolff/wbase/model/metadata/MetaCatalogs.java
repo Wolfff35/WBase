@@ -17,7 +17,7 @@ public class MetaCatalogs {
         public static final class HEAD{
             public static final String CODE = "Code";
             public static final String DESCRIPTION= "Description";
-            public static final String ISFOLDER= "isFolder";
+            public static final String ISFOLDER= "IsFolder";
             public static final String PARENT_KEY= "Parent_Key";
 
         }
@@ -64,3 +64,4 @@ public class MetaCatalogs {
     }
 
 }
+//https://developer.android.com/guide/components/tasks-and-back-stack.html

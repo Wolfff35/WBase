@@ -8,14 +8,18 @@ import com.wolff.wbase.model.metadata.MetaCatalogs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by wolff on 28.08.2017.
  */
 
-public class WCat_Contragent extends WCatalog {
+public class WCat_Contragent extends WCatalog implements Serializable {
     private String name_short;
     private String name_full;
-    public WCat_Contragent(Context context, JSONObject jsonObject) {
+    public WCat_Contragent(){
+    }
+    public WCat_Contragent(Context context,JSONObject jsonObject) {
         super(context,jsonObject);
         try {
             this.name_short = jsonObject.getString(MetaCatalogs.MContragent.HEAD.NAME_SHORT);
@@ -48,4 +52,6 @@ public class WCat_Contragent extends WCatalog {
     public void setName_full(String name_full) {
         this.name_full = name_full;
     }
+
+
 }

@@ -58,6 +58,7 @@ public class EditView extends LinearLayout {
     public void setEnabled(boolean enabled){
         tvEdText.setEnabled(enabled);
     }
+
     //-------------------------------------------------------------------------------------------------
 
     private void initComponent() {

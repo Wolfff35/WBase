@@ -8,6 +8,8 @@ import com.wolff.wbase.model.metadata.MetaDocuments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.DATE;
 import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.NUMBER;
 import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.POSTED;
@@ -17,7 +19,7 @@ import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.POSTED
  * Created by wolff on 28.08.2017.
  */
 
-public class WDocument extends WObject {
+public class WDocument extends WObject implements Serializable{
     private String mNumber;
     private String mDate;
     private boolean mPosted; //проведен
@@ -25,7 +27,7 @@ public class WDocument extends WObject {
     //    super();
     //}
      public WDocument(Context context,JSONObject jsonObject) {
-        super(context,jsonObject);
+        //super(context,jsonObject);
         try {
             this.setDate(jsonObject.getString(DATE));
             this.setNumber(jsonObject.getString(NUMBER));
@@ -48,6 +50,26 @@ public class WDocument extends WObject {
             }
         }
         return item;
+    }
+
+    @Override
+    public boolean addNewItem() {
+        return false;
+    }
+
+    @Override
+    protected StringBuffer formatXmlBody() {
+        return super.formatXmlBody();
+    }
+
+    @Override
+    public boolean updateItem() {
+        return false;
+    }
+
+    @Override
+    public boolean deleteItem() {
+        return false;
     }
 
     public String getNumber() {

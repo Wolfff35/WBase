@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
 import com.wolff.wbase.model.abs.AWObject_getter;
-import com.wolff.wbase.model.abs.Const;
+import com.wolff.wbase.tools.Const;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 
 import org.json.JSONArray;
@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.wolff.wbase.model.abs.Const.NULL_REF;
+import static com.wolff.wbase.tools.Const.NULL_REF;
 import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.ISFOLDER;
 
 /**
@@ -22,32 +22,31 @@ import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.ISFOLDER
  */
 
 public class WCat_Contragent_getter extends AWObject_getter {
-    private String mObjectType;
+    //private String mObjectType;
     private Context mContext;
 
     public WCat_Contragent_getter(Context context){
-        this.mObjectType = MetaCatalogs.MContragent.CATALOG_NAME;
+        //this.mObjectType = MetaCatalogs.MContragent.CATALOG_NAME;
         this.mContext = context;
     }
     @Override
-    public WCat_Contragent getItemByGuid(String guid) {
-        if(guid.equalsIgnoreCase(NULL_REF)){
+    public WCat_Contragent getItem(String guid) {
+        if (guid.equalsIgnoreCase(NULL_REF)) {
             return null;
         }
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
-        JSONObject jsonTasks = dataLab.getObjectOnline(mObjectType,guid);
-        if (jsonTasks!=null) {
+        JSONObject jsonTasks = dataLab.getObjectOnline(MetaCatalogs.MContragent.CATALOG_NAME, guid);
+        if (jsonTasks != null) {
             return new WCat_Contragent(mContext,jsonTasks);
-        }else {
+        } else {
             return null;
         }
     }
-
     @Override
-    public ArrayList<WCat_Contragent> getList() {
+    public ArrayList<WCat_Contragent> getList(String sObjectType) {
         try {
             OnlineDataSender dataLab = OnlineDataSender.get(mContext);
-            JSONObject jsonObject = dataLab.getObjectOnline(mObjectType,null);
+            JSONObject jsonObject = dataLab.getObjectOnline(sObjectType,null);
             if(jsonObject!=null) {
                 return getListFromJson(jsonObject);
             }else {
@@ -73,4 +72,6 @@ public class WCat_Contragent_getter extends AWObject_getter {
         Log.e("ORG LIST"," read "+items.size()+" items");
         return items;
     }
+
+
 }

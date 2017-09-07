@@ -17,8 +17,10 @@ import android.widget.SearchView;
 import com.wolff.wbase.R;
 import com.wolff.wbase.adapters.WCatalog_list_item_adapter;
 import com.wolff.wbase.model.abs.WCatalog;
+import com.wolff.wbase.model.abs.WCatalog_getter;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
+import com.wolff.wbase.model.metadata.MetaCatalogs;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class WCatalog_list_dialog extends DialogFragment implements SearchView.O
         mMainSearchView = (SearchView)mMainView.findViewById(R.id.etSearchItem);
         setupSearchView();
 
-        final ArrayList<WCatalog> listCatalog = (ArrayList<WCatalog>)(ArrayList<?>) new WCat_Contragent_getter(mContext).getList();//TODO выбор правильного геттера
+        final ArrayList<WCatalog> listCatalog = new WCatalog_getter(mContext).getList(MetaCatalogs.MContragent.CATALOG_NAME);//TODO выбор правильного геттера
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         mMainAdapter = new WCatalog_list_item_adapter(mContext, listCatalog);
         mMainListView.setAdapter(mMainAdapter);

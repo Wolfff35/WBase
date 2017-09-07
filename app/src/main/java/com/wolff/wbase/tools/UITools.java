@@ -1,6 +1,11 @@
 package com.wolff.wbase.tools;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
@@ -25,4 +30,22 @@ public class UITools {
         Log.e("FIRST RUN","INIT");
         new PreferencesTools().setBooleanPreference(context,PreferencesTools.PREFERENCE_IS_FIRST_RUN,false);
     }
+    public void displayFragment(FragmentActivity context, Fragment fragment) {
+        FragmentTransaction fragmentTransaction;
+        FragmentManager fm = context.getSupportFragmentManager();
+
+        fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_main, fragment);
+                //.addToBackStack(fragment.getTag());
+        fragmentTransaction.commit();
+    }
+/*
+   // Восстанавливаем уже созданный фрагмент
+    FragmentManager fm = getSupportFragmentManager();
+    fragment = (MyFragment) fm.findFragmentByTag(FRAGMENT_INSTANCE_NAME);
+    // Если фрагмент не сохранен, создаем новый экземпляр
+    if(fragment == null){
+        fragment = new MyFragment();
+        fm.beginTransaction().add(R.id.container, fragment, FRAGMENT_INSTANCE_NAME).commit();
+ */
 }

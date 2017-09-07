@@ -3,35 +3,51 @@ package com.wolff.wbase.model.abs;
 
 import android.content.Context;
 
+import com.wolff.wbase.tools.Debug;
+import com.wolff.wbase.tools.StringConvertTools;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.CODE;
 import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.DESCRIPTION;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.ISFOLDER;
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MCatalog.HEAD.PARENT_KEY;
 
 /**
  * Created by wolff on 28.08.2017.
  */
 
-public class WCatalog extends WObject {
+public class WCatalog extends WObject implements Serializable {
     private String mCode;
     private String mDescription;
+    private String mParentKey;
+    private boolean mIsFolder;
 
     public WCatalog(){
         super();
     }
 
-    public WCatalog(Context context, JSONObject userJsonObject) {
+    public WCatalog(Context context,JSONObject userJsonObject) {
         super(context,userJsonObject);
         try {
             this.setDescription(userJsonObject.getString(DESCRIPTION));
             this.setCode(userJsonObject.getString(CODE));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Debug.Log("ERROR 1",""+e.getLocalizedMessage());
         }
-
+        try{
+            this.setFolder(Boolean.valueOf(userJsonObject.getString(ISFOLDER)));
+        }catch (JSONException e){
+            this.setFolder(false);
+        }
+        try{
+            this.setParentKey(userJsonObject.getString(PARENT_KEY));
+        }catch (JSONException e){
+        }
     }
-
     @Override
     public JSONObject toJson(boolean onlyDeletionMark) {
         JSONObject item = super.toJson(onlyDeletionMark);
@@ -44,6 +60,31 @@ public class WCatalog extends WObject {
             }
         }
         return item;
+    }
+
+    @Override
+    public boolean addNewItem() {
+        return false;
+    }
+
+    @Override
+    protected StringBuffer formatXmlBody() {
+        StringBuffer sb = super.formatXmlBody();
+        if (!getCode().isEmpty()) {
+            StringConvertTools.addFieldToXml(sb, CODE, getCode());
+        }
+        StringConvertTools.addFieldToXml(sb, DESCRIPTION, getDescription());
+        return sb;
+    }
+
+    @Override
+    public boolean updateItem() {
+        return false;
+    }
+
+    @Override
+    public boolean deleteItem() {
+        return false;
     }
 
     public String getCode() {
@@ -62,5 +103,19 @@ public class WCatalog extends WObject {
         mDescription = description;
     }
 
+    public boolean isFolder() {
+        return mIsFolder;
+    }
 
+    public void setFolder(boolean folder) {
+        mIsFolder = folder;
+    }
+
+    public String getParentKey() {
+        return mParentKey;
+    }
+
+    public void setParentKey(String parentKey) {
+        mParentKey = parentKey;
+    }
 }

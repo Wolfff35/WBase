@@ -2,11 +2,14 @@ package com.wolff.wbase.model.abs;
 
 import android.content.Context;
 
+import com.wolff.wbase.tools.StringConvertTools;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.DATA_VERSION;
 import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.DELETION_MARK;
 import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.REF_KEY;
 
@@ -15,8 +18,9 @@ import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.REF_KEY;
  */
 
 public abstract class WObject extends AWObject implements Serializable{
-    private static final long serialVersionUID = 2163051469151804397L;
+    //private static final long serialVersionUID = 2163051469151804397L;
     private String mRef_Key;
+    private String mDataVersion;
     private boolean mDeletionMark;
 
     public WObject(){}
@@ -24,6 +28,7 @@ public abstract class WObject extends AWObject implements Serializable{
         try {
             this.setRef_Key(userJsonObject.getString(REF_KEY));
             this.setDeletionMark(userJsonObject.getBoolean(DELETION_MARK));
+            this.setDataVersion(userJsonObject.getString(DATA_VERSION));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -40,6 +45,13 @@ public abstract class WObject extends AWObject implements Serializable{
             e.printStackTrace();
         }
         return item;
+    }
+
+    @Override
+    protected StringBuffer formatXmlBody() {
+        StringBuffer sb = new StringBuffer();
+        StringConvertTools.addFieldToXml(sb, DELETION_MARK, String.valueOf(isDeletionMark()));
+        return sb;
     }
 
     //==================================================================================================
@@ -70,4 +82,11 @@ public abstract class WObject extends AWObject implements Serializable{
         mDeletionMark = deletionMark;
     }
 
- }
+    public String getDataVersion() {
+        return mDataVersion;
+    }
+
+    public void setDataVersion(String dataVersion) {
+        mDataVersion = dataVersion;
+    }
+}

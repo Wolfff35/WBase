@@ -4,17 +4,14 @@ import android.content.Context;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
 import com.wolff.wbase.model.abs.AWObject_getter;
-import com.wolff.wbase.model.abs.Const;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
-import com.wolff.wbase.tools.Debug;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.wolff.wbase.model.abs.Const.NULL_REF;
+import static com.wolff.wbase.tools.Const.NULL_REF;
 
 /**
  * Created by wolff on 01.09.2017.
@@ -28,10 +25,14 @@ public class WCat_Organization_getter extends AWObject_getter {
         this.mContext = context;
     }
     @Override
-    public WCat_Organization getItemByGuid(String guid) {
+    public WCat_Organization getItem(String guid) {
+        if(guid.isEmpty()){
+            return null;
+        }
         if(guid.equalsIgnoreCase(NULL_REF)){
             return null;
         }
+
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         JSONObject jsonTasks = dataLab.getObjectOnline(mObjectType,guid);
         if (jsonTasks!=null) {
@@ -42,31 +43,13 @@ public class WCat_Organization_getter extends AWObject_getter {
     }
 
     @Override
-    public ArrayList<WCat_Organization> getList() {
-        try {
-            OnlineDataSender dataLab = OnlineDataSender.get(mContext);
-            JSONObject jsonObject = dataLab.getObjectOnline(mObjectType,null);
-            if(jsonObject!=null) {
-                return getListFromJson(jsonObject);
-            }else {
-                return null;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public ArrayList getList(String sTypeObject) {
         return null;
     }
 
     @Override
-    protected ArrayList<WCat_Organization> getListFromJson(JSONObject jsonObjectList) throws JSONException {
-        ArrayList<WCat_Organization> items = new ArrayList<>();
-        JSONArray jsonArray = jsonObjectList.getJSONArray(Const.JSON_SEPARATOR);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            items.add(new WCat_Organization(mContext,jsonObject));
-        }
-        Debug.Log("ORG LIST"," read "+items.size()+" items");
-        return items;
+    protected ArrayList getListFromJson(JSONObject jsonObjectList) throws JSONException {
+        return null;
     }
 }
 
