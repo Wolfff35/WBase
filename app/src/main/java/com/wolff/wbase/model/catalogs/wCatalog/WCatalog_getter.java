@@ -1,8 +1,10 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.model.catalogs.wCatalog;
 
 import android.content.Context;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
+import com.wolff.wbase.model.aWObject.AWObject_getter;
+import com.wolff.wbase.model.aWObject.WObject;
 import com.wolff.wbase.tools.Const;
 import com.wolff.wbase.tools.Debug;
 
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 
 public class WCatalog_getter extends AWObject_getter {
     private Context mContext;
+    public WCatalog_getter(){}
 
     public WCatalog_getter(Context context){
         this.mContext = context;

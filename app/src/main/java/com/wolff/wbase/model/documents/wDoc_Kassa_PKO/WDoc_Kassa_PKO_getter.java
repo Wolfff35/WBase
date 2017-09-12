@@ -1,10 +1,11 @@
-package com.wolff.wbase.model.catalogs.wOrganization;
+package com.wolff.wbase.model.documents.wDoc_Kassa_PKO;
 
 import android.content.Context;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_getter;
-import com.wolff.wbase.model.metadata.MetaCatalogs;
+import com.wolff.wbase.model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO;
+import com.wolff.wbase.model.documents.wDocument.WDocument_getter;
+import com.wolff.wbase.model.metadata.MetaDocuments;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,18 +15,19 @@ import java.util.ArrayList;
 import static com.wolff.wbase.tools.Const.NULL_REF;
 
 /**
- * Created by wolff on 01.09.2017.
+ * Created by wolff on 11.09.2017.
  */
 
-public class WCat_Organization_getter extends WCatalog_getter {
+public class WDoc_Kassa_PKO_getter extends WDocument_getter {
     private String mObjectType;
     private Context mContext;
-    public WCat_Organization_getter(Context context){
-        this.mObjectType = MetaCatalogs.MOrganization.CATALOG_NAME;
+
+    public WDoc_Kassa_PKO_getter(Context context){
+        this.mObjectType = MetaDocuments.MDoc_Kassa_PKO.DOCUMENT_NAME;
         this.mContext = context;
     }
     @Override
-    public WCat_Organization getItem(String guid) {
+    public WDoc_Kassa_PKO getItem(String guid) {
         if(guid.isEmpty()){
             return null;
         }
@@ -36,7 +38,7 @@ public class WCat_Organization_getter extends WCatalog_getter {
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         JSONObject jsonTasks = dataLab.getObjectOnline(mObjectType,guid);
         if (jsonTasks!=null) {
-            return new WCat_Organization(mContext,jsonTasks);
+            return new WDoc_Kassa_PKO(mContext,jsonTasks);
         }else {
             return null;
         }
@@ -52,4 +54,3 @@ public class WCat_Organization_getter extends WCatalog_getter {
         return super.getListFromJson(jsonObjectList);
     }
 }
-

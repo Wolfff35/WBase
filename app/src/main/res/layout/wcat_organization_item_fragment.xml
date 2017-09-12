@@ -5,26 +5,26 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <com.wolff.wbase.custom_views.EditView
+    <com.wolff.wbase.tools.custom_views.EditView
 
         android:id="@+id/evCode"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.wolff.wbase.custom_views.EditView>
+    </com.wolff.wbase.tools.custom_views.EditView>
 
-    <com.wolff.wbase.custom_views.EditView
+    <com.wolff.wbase.tools.custom_views.EditView
 
         android:id="@+id/evDescription"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.wolff.wbase.custom_views.EditView>
+    </com.wolff.wbase.tools.custom_views.EditView>
 
-    <com.wolff.wbase.custom_views.SelectView
+    <com.wolff.wbase.tools.custom_views.SelectView
         android:id="@+id/svContragent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.wolff.wbase.custom_views.SelectView>
+    </com.wolff.wbase.tools.custom_views.SelectView>
 </LinearLayout>

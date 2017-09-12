@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.model.aWObject;
 
 import android.content.Context;
 

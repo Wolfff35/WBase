@@ -1,9 +1,8 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.model.aWObject;
 
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by wolff on 23.08.2017.

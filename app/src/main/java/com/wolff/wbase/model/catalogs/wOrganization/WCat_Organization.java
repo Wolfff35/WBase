@@ -6,7 +6,7 @@ import com.wolff.wbase.datalab.OnlineDataSender;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
 import com.wolff.wbase.tools.Const;
 import com.wolff.wbase.tools.XmlTools;
-import com.wolff.wbase.model.abs.WCatalog;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.tools.Debug;
@@ -29,6 +29,7 @@ public class WCat_Organization extends WCatalog implements Serializable {
     private WCat_Contragent mContragent;
     private Context mContext;
     private String mPrefix;
+    private static final String CATALOG_TYPE = MetaCatalogs.MOrganization.CATALOG_NAME;
 
     public WCat_Organization(Context context){
         mContext=context;
@@ -77,15 +78,15 @@ public class WCat_Organization extends WCatalog implements Serializable {
     @Override
     public boolean addNewItem(){
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
-        String s_data = XmlTools.formatXmlHeader(mContext,MetaCatalogs.MOrganization.CATALOG_NAME)+formatXmlBody().toString()+ XmlTools.formatXmlFooter(mContext);
-        return dataLab.postObjectOnline(CONNECTION_TYPE_POST,MetaCatalogs.MOrganization.CATALOG_NAME,null,s_data);
+        String s_data = XmlTools.formatXmlHeader(mContext,CATALOG_TYPE)+formatXmlBody().toString()+ XmlTools.formatXmlFooter(mContext);
+        return dataLab.postObjectOnline(CONNECTION_TYPE_POST,CATALOG_TYPE,null,s_data);
     }
 
     @Override
     public boolean updateItem(){
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         String s_data = this.toJson(false).toString();
-        return dataLab.postObjectOnline(CONNECTION_TYPE_PATCH,MetaCatalogs.MOrganization.CATALOG_NAME,this.getRef_Key(),s_data);
+        return dataLab.postObjectOnline(CONNECTION_TYPE_PATCH,CATALOG_TYPE,this.getRef_Key(),s_data);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class WCat_Organization extends WCatalog implements Serializable {
         this.setDeletionMark(true);
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         String s_data = this.toJson(true).toString();
-        return dataLab.postObjectOnline(CONNECTION_TYPE_PATCH,MetaCatalogs.MOrganization.CATALOG_NAME,this.getRef_Key(),s_data);
+        return dataLab.postObjectOnline(CONNECTION_TYPE_PATCH,CATALOG_TYPE,this.getRef_Key(),s_data);
     }
 
     @Override

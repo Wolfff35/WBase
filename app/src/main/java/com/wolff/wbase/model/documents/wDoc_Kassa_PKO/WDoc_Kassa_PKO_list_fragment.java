@@ -1,7 +1,6 @@
-package com.wolff.wbase.fragments;
+package com.wolff.wbase.model.documents.wDoc_Kassa_PKO;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
@@ -9,13 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.activities.WOrganization_item_activity;
-import com.wolff.wbase.adapters.WCatalog_list_item_adapter;
-import com.wolff.wbase.model.abs.WCatalog;
-import com.wolff.wbase.model.abs.WCatalog_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_getter;
-import com.wolff.wbase.model.metadata.MetaCatalogs;
+import com.wolff.wbase.model.documents.wDocument.WDocument_list_item_adapter;
+import com.wolff.wbase.model.documents.wDocument.WDocument;
+import com.wolff.wbase.model.documents.wDocument.WDocument_getter;
+import com.wolff.wbase.model.documents.wDocument.WDocument_list_fragment;
+import com.wolff.wbase.model.metadata.MetaDocuments;
 import com.wolff.wbase.tools.Debug;
 
 import java.util.ArrayList;
@@ -24,22 +21,22 @@ import java.util.ArrayList;
  * Created by wolff on 01.09.2017.
  */
 
-public class WCat_Organization_list_fragment extends WCatalog_list_fragment {
-    private ArrayList<WCatalog> mOrgList;
-    private WCat_Organization_list_fragment_listener listener1;
+public class WDoc_Kassa_PKO_list_fragment extends WDocument_list_fragment {
+    private ArrayList<WDocument> mDocList;
+    private WDoc_Kassa_PKO_list_fragment_listener listener1;
 
-    public interface WCat_Organization_list_fragment_listener{
-        void OnWOrganizationItemSelected(WCatalog organization);
+    public interface WDoc_Kassa_PKO_list_fragment_listener{
+        void OnWDocumentItemSelected(WDocument document);
     }
 
-    public static WCat_Organization_list_fragment newInstance(){
-        return new WCat_Organization_list_fragment();
+    public static WDoc_Kassa_PKO_list_fragment newInstance(){
+        return new WDoc_Kassa_PKO_list_fragment();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mOrgList = new WCatalog_getter(getContext()).getList(MetaCatalogs.MOrganization.CATALOG_NAME);
+        mDocList = new WDocument_getter(getContext()).getList(MetaDocuments.MDoc_Kassa_PKO.DOCUMENT_NAME);
         fillData();
     }
 
@@ -49,16 +46,16 @@ public class WCat_Organization_list_fragment extends WCatalog_list_fragment {
         super.onActivityCreated(savedInstanceState);
         //getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         fillData();
-        getActivity().setTitle("Организации");
+        getActivity().setTitle("ПКО");
     }
 
     private void fillData(){
-        mMainAdapter = new WCatalog_list_item_adapter(getContext(), mOrgList);
+        mMainAdapter = new WDocument_list_item_adapter(getContext(), mDocList);
         mMainListView.setAdapter(mMainAdapter);
         mMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listener1.OnWOrganizationItemSelected(mOrgList.get(position));
+                listener1.OnWDocumentItemSelected(mDocList.get(position));
             }
         });
         mMainListView.setTextFilterEnabled(true);
@@ -67,7 +64,7 @@ public class WCat_Organization_list_fragment extends WCatalog_list_fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener1 = (WCat_Organization_list_fragment_listener) context;
+        listener1 = (WDoc_Kassa_PKO_list_fragment_listener) context;
     }
 
     @Override
@@ -80,8 +77,8 @@ public class WCat_Organization_list_fragment extends WCatalog_list_fragment {
         int id = item.getItemId();
         switch (id){
             case R.id.action_item_add:{
-                Intent intent = WOrganization_item_activity.newIntent(getContext(),null);
-                startActivity(intent);
+                //Intent intent = WCat_Organization_item_activity.newIntent(getContext(),null);
+                //startActivity(intent);
                 Debug.Log("ADD ORG","ADDD");
                 break;
             }

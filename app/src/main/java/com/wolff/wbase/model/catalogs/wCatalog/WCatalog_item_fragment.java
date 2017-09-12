@@ -1,4 +1,4 @@
-package com.wolff.wbase.fragments;
+package com.wolff.wbase.model.catalogs.wCatalog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

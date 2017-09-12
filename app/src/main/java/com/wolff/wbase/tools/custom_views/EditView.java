@@ -1,4 +1,4 @@
-package com.wolff.wbase.custom_views;
+package com.wolff.wbase.tools.custom_views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

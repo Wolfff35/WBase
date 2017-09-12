@@ -1,4 +1,4 @@
-package com.wolff.wbase.dialogs;
+package com.wolff.wbase.model.catalogs.wCatalog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.adapters.WCatalog_list_item_adapter;
-import com.wolff.wbase.model.abs.WCatalog;
-import com.wolff.wbase.model.abs.WCatalog_getter;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.model.metadata.MetaCatalogs;
 
 import java.util.ArrayList;
 
@@ -35,20 +30,37 @@ public class WCatalog_list_dialog extends DialogFragment implements SearchView.O
     private WCatalog_list_item_adapter mMainAdapter;
     private Context mContext;
     private View mMainView;
+    private String mCatalogType;
+    private static final String CATALOG_TYPE = "Type_Cat";
 
     public WCatalog_list_dialog(){
-
+       // this.mCatalogType = catalogType;
     }
+    public static WCatalog_list_dialog newInstance(String catalogType){
+        Bundle args = new Bundle();
+        args.putSerializable(CATALOG_TYPE,catalogType);
+        WCatalog_list_dialog fragment = new WCatalog_list_dialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCatalogType = getArguments().getString(CATALOG_TYPE);
+        //getActivity().setTitle("ВЫБОР "+mCatalogType.replace("Catalog_",""));
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-        mMainView = LayoutInflater.from(mContext).inflate(R.layout.list_fragment,null);
+        mMainView = LayoutInflater.from(mContext).inflate(R.layout.wcatalog_list_fragment,null);
         mMainListView = (ListView)mMainView.findViewById(R.id.lvMain);
         mMainSearchView = (SearchView)mMainView.findViewById(R.id.etSearchItem);
         setupSearchView();
 
-        final ArrayList<WCatalog> listCatalog = new WCatalog_getter(mContext).getList(MetaCatalogs.MContragent.CATALOG_NAME);//TODO выбор правильного геттера
+        final ArrayList<WCatalog> listCatalog = new WCatalog_getter(mContext).getList(mCatalogType);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         mMainAdapter = new WCatalog_list_item_adapter(mContext, listCatalog);
         mMainListView.setAdapter(mMainAdapter);

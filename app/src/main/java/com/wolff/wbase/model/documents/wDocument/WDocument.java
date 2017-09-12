@@ -1,14 +1,15 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.model.documents.wDocument;
 
 import android.content.Context;
 
-import com.wolff.wbase.model.abs.WObject;
-import com.wolff.wbase.model.metadata.MetaDocuments;
+import com.wolff.wbase.model.aWObject.WObject;
+import com.wolff.wbase.tools.DateFormatTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.DATE;
 import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.NUMBER;
@@ -21,15 +22,18 @@ import static com.wolff.wbase.model.metadata.MetaDocuments.MDocument.HEAD.POSTED
 
 public class WDocument extends WObject implements Serializable{
     private String mNumber;
-    private String mDate;
+    private Date mDate;
     private boolean mPosted; //проведен
     //public WDocument(){
     //    super();
     //}
+     public WDocument(Context context) {
+     }
      public WDocument(Context context,JSONObject jsonObject) {
-        //super(context,jsonObject);
+        super(context,jsonObject);
         try {
-            this.setDate(jsonObject.getString(DATE));
+            DateFormatTools dft = new DateFormatTools();
+            this.setDate(dft.dateFromString(jsonObject.getString(DATE),DateFormatTools.DATE_FORMAT_STR));
             this.setNumber(jsonObject.getString(NUMBER));
             this.setPosted(jsonObject.getBoolean(POSTED));
         } catch (JSONException e) {
@@ -80,11 +84,11 @@ public class WDocument extends WObject implements Serializable{
         mNumber = number;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         mDate = date;
     }
 

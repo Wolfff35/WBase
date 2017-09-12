@@ -1,4 +1,4 @@
-package com.wolff.wbase.fragments;
+package com.wolff.wbase.model.catalogs.wOrganization;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.custom_views.EditView;
-import com.wolff.wbase.dialogs.WCatalog_list_dialog;
+import com.wolff.wbase.tools.custom_views.EditView;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_dialog;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_item_fragment;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
+import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.tools.Debug;
-import com.wolff.wbase.custom_views.SelectView;
+import com.wolff.wbase.tools.custom_views.SelectView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -27,7 +28,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by wolff on 04.09.2017.
  */
 
-public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
+public class WCat_Organization_item_fragment extends WCatalog_item_fragment {
     public static final String ORG_ITEM_ARG = "W_ORG";
     private static final int DIALOG_REQUEST_CONTRAGENT = 1;
 
@@ -88,7 +89,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==-RESULT_OK) {
+        if(resultCode==RESULT_OK) {
             switch (requestCode) {
                 case DIALOG_REQUEST_CONTRAGENT:
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
@@ -108,7 +109,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment{
     private View.OnClickListener chooseListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DialogFragment dialogFragment = new WCatalog_list_dialog();
+            DialogFragment dialogFragment = WCatalog_list_dialog.newInstance(MetaCatalogs.MContragent.CATALOG_NAME);
             dialogFragment.setTargetFragment(WCat_Organization_item_fragment.this,DIALOG_REQUEST_CONTRAGENT);
             dialogFragment.show(getFragmentManager(),dialogFragment.getClass().getName());
         }

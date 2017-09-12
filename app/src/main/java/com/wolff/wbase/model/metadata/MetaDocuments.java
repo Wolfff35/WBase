@@ -17,6 +17,7 @@ public class MetaDocuments {
         public static final String DOCUMENT_NAME = "Document_Касса_ПКО";
 
         public static final class HEAD{
+            public static final String ORGANIZATION_KEY = "Организация_Key";
             public static final String CURRENCY_KEY = "Валюта_Key";
             public static final String CONTRAGENT_KEY = "Контрагент";
             public static final String CONTRAGENT_TYPE = "Контрагент_Type";

@@ -1,8 +1,9 @@
-package com.wolff.wbase.model.abs;
+package com.wolff.wbase.model.catalogs.wCatalog;
 
 
 import android.content.Context;
 
+import com.wolff.wbase.model.aWObject.WObject;
 import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.StringConvertTools;
 

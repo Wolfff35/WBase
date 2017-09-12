@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_item_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Сохранить"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_item_post"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Провести"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_item_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Удалить"
+        app:showAsAction="always"/>
+</menu>

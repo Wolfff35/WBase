@@ -1,17 +1,15 @@
-package com.wolff.wbase.custom_views;
+package com.wolff.wbase.tools.custom_views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.abs.WCatalog;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 
 /**
  * Created by wolff on 04.09.2017.

@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.catalogs.wOrganization;
+package com.wolff.wbase.model.catalogs.wCurrency;
 
 import android.content.Context;
 
@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import static com.wolff.wbase.tools.Const.NULL_REF;
 
 /**
- * Created by wolff on 01.09.2017.
+ * Created by wolff on 11.09.2017.
  */
 
-public class WCat_Organization_getter extends WCatalog_getter {
+public class WCat_Currency_getter extends WCatalog_getter {
     private String mObjectType;
     private Context mContext;
-    public WCat_Organization_getter(Context context){
-        this.mObjectType = MetaCatalogs.MOrganization.CATALOG_NAME;
+    public WCat_Currency_getter(Context context){
+        this.mObjectType = MetaCatalogs.MCurrency.CATALOG_NAME;
         this.mContext = context;
     }
     @Override
-    public WCat_Organization getItem(String guid) {
+    public WCat_Currency getItem(String guid) {
         if(guid.isEmpty()){
             return null;
         }
@@ -36,7 +36,7 @@ public class WCat_Organization_getter extends WCatalog_getter {
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
         JSONObject jsonTasks = dataLab.getObjectOnline(mObjectType,guid);
         if (jsonTasks!=null) {
-            return new WCat_Organization(mContext,jsonTasks);
+            return new WCat_Currency(mContext,jsonTasks);
         }else {
             return null;
         }
@@ -52,4 +52,3 @@ public class WCat_Organization_getter extends WCatalog_getter {
         return super.getListFromJson(jsonObjectList);
     }
 }
-

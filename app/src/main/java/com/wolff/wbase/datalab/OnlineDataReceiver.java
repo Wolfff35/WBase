@@ -49,6 +49,8 @@ public class OnlineDataReceiver {
             return out.toByteArray();
         }catch (IOException e) {
             Debug.Log("getURLBytes","ERROR "+e.getLocalizedMessage());
+            //Debug.Log("getURLBytes","ERROR - "+e.getStackTrace().toString());
+            e.printStackTrace();
             return null;
         }finally {
             connection.disconnect();

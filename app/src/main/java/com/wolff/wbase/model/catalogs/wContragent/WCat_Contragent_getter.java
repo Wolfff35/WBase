@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
-import com.wolff.wbase.model.abs.AWObject_getter;
+import com.wolff.wbase.model.aWObject.AWObject_getter;
 import com.wolff.wbase.tools.Const;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 

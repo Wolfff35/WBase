@@ -1,4 +1,4 @@
-package com.wolff.wbase.adapters;
+package com.wolff.wbase.model.catalogs.wCatalog;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.abs.WCatalog;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 import com.wolff.wbase.tools.Debug;
 
 import java.util.ArrayList;
