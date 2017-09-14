@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wolff.wbase.R;
@@ -20,7 +19,8 @@ import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency_getter;
 import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_getter;
 import com.wolff.wbase.tools.DateFormatTools;
 import com.wolff.wbase.tools.custom_views.EditView;
-import com.wolff.wbase.tools.custom_views.SelectView;
+import com.wolff.wbase.tools.custom_views.SelectStringArrayView;
+import com.wolff.wbase.tools.custom_views.SelectWCatalogView;
 import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_dialog;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
@@ -28,8 +28,13 @@ import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
 import com.wolff.wbase.model.documents.wDocument.WDocument_item_fragment;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.tools.Debug;
+import com.wolff.wbase.tools.dialogs.String_list_dialog;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static com.wolff.wbase.tools.Const.PREFIX_CATALOG;
 
 /**
  * Created by wolff on 04.09.2017.
@@ -42,12 +47,14 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
     private static final int DIALOG_REQUEST_CONTRAGENT = 3;
     private static final int DIALOG_REQUEST_CURRENCY = 4;
 
+    private ArrayList<String> mContrsgentTypes = new ArrayList<>(); //  Arrays.asList(new String[]{"Контрагент","АЗС"});
+    private String mOldContragentType;
     private WDoc_Kassa_PKO mWDoc;
 
-    private SelectView svOrganization;
-    private SelectView svContragent;
-    private SelectView svCurrency;
-    private SelectView svContragentType;
+    private SelectWCatalogView svOrganization;
+    private SelectWCatalogView svContragent;
+    private SelectWCatalogView svCurrency;
+    private SelectStringArrayView ssaContragentType;
 
     private EditView evCurrencyCourse;
     private EditView evSummaVal;
@@ -68,13 +75,16 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mWDoc = (WDoc_Kassa_PKO) getArguments().getSerializable(ORG_ITEM_ARG);
+        mContrsgentTypes.add(MetaCatalogs.MContragent.CATALOG_NAME.replace(PREFIX_CATALOG,""));
+        mContrsgentTypes.add(MetaCatalogs.MAZS.CATALOG_NAME.replace(PREFIX_CATALOG,""));
+
         String item_key = getArguments().getString(ORG_ITEM_ARG);
         if(item_key!=null&&!item_key.isEmpty()){
             mWDoc = new WDoc_Kassa_PKO_getter(getContext()).getItem(item_key);
         }
         if(mWDoc==null){
             mWDoc = new WDoc_Kassa_PKO(getContext());
+            mWDoc.setDate(new Date());
             mIsNewItem=true;
         }
     }
@@ -85,10 +95,10 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view =  inflater.inflate(R.layout.wdoc_kassa_pko_item_fragment, container, false);
 
-        svOrganization = (SelectView)view.findViewById(R.id.svOrganization);
-        svContragent = (SelectView)view.findViewById(R.id.svContragent);
-        svContragentType = (SelectView)view.findViewById(R.id.svContragentType);
-        svCurrency = (SelectView)view.findViewById(R.id.svCurrency);
+        svOrganization = (SelectWCatalogView)view.findViewById(R.id.svOrganization);
+        svContragent = (SelectWCatalogView)view.findViewById(R.id.svContragent);
+        ssaContragentType = (SelectStringArrayView)view.findViewById(R.id.svContragentType);
+        svCurrency = (SelectWCatalogView)view.findViewById(R.id.svCurrency);
 
         evNumber = (EditView) view.findViewById(R.id.evNumber);
         evDate = (EditView) view.findViewById(R.id.evDate);
@@ -119,7 +129,18 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
         svOrganization.setOnClickListener_choose(chooseOrgListener);
         svOrganization.setOnClickListener_clear(clearOrgListener);
 
-        svContragent.setLabel("Контрагент");
+
+        ssaContragentType.setLabel("Тип плательщика");
+        if(mWDoc!=null) {
+            if(mWDoc.getContragentType()!=null) {
+                mOldContragentType = mWDoc.getContragentType().replace(PREFIX_CATALOG, "");
+            }
+        }
+        ssaContragentType.setItem(mOldContragentType);
+        ssaContragentType.setOnClickListener_choose(chooseContragentTypeListener);
+        ssaContragentType.setOnClickListener_clear(clearContragentTypeListener);
+
+        svContragent.setLabel("Плательщик");
         svContragent.setWCatalogItem(mWDoc.getContragent());
         svContragent.setOnClickListener_choose(chooseContragentListener);
         svContragent.setOnClickListener_clear(clearContragentListener);
@@ -148,23 +169,33 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
                 }
                 case DIALOG_REQUEST_CONTRAGENT: {
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
-                    WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
-                    mWDoc.setContragent(contragent);
+                    switch ("Catalog_"+ ssaContragentType.getItem()){
+                        case MetaCatalogs.MContragent.CATALOG_NAME:
+                            WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
+                            mWDoc.setContragent(contragent);
+                            break;
+                        case MetaCatalogs.MAZS.CATALOG_NAME:
+                            //WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
+                            //mWDoc.setContragent(contragent);
+                            break;
+                    }
                     svContragent.setWCatalogItem(mWDoc.getContragent());
                     mIsDataChanged = true;
                     setOptionsMenuVisibility();
-                    Debug.Log("RESULT", "" + contragent.getDescription());
+                    //Debug.Log("RESULT", "" + contragent.getDescription());
                     break;
                 }
                 case DIALOG_REQUEST_CONTRAGENT_TYPE: {
-                    /*String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
-                    WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
-                    mWDoc.setContragent(contragent);
-                    svContragent.setWCatalogItem(mWDoc.getContragent());
-                    mIsDataChanged = true;
-                    setOptionsMenuVisibility();
-                    Debug.Log("RESULT", "" + contragent.getDescription());
-                    */
+                    String contragentType = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
+                    if(!contragentType.equalsIgnoreCase(mOldContragentType)) {
+                        mWDoc.setContragentType(contragentType);
+                        ssaContragentType.setItem(mWDoc.getContragentType());//.replace("Catalog_",""));
+                        mWDoc.setContragent(null);
+                        svContragent.setWCatalogItem(null);
+                        mIsDataChanged = true;
+                        setOptionsMenuVisibility();
+                        Debug.Log("RESULT", "" + contragentType);
+                    }
                     break;
                 }
                 case DIALOG_REQUEST_CURRENCY: {
@@ -201,11 +232,33 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
             setOptionsMenuVisibility();
         }
     };
+    private View.OnClickListener chooseContragentTypeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mOldContragentType =mWDoc.getContragentType();//.replace("Catalog_","");
+
+            DialogFragment dialogFragment = String_list_dialog.newInstance(mContrsgentTypes);
+            dialogFragment.setTargetFragment(WDoc_Kassa_PKO_item_fragment.this,DIALOG_REQUEST_CONTRAGENT_TYPE);
+            dialogFragment.show(getFragmentManager(),dialogFragment.getClass().getName());
+        }
+    };
+    private View.OnClickListener clearContragentTypeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mWDoc.setContragentType(null);
+            ssaContragentType.setItem(null);
+            mWDoc.setContragent(null);
+            svContragent.setWCatalogItem(null);
+            mIsDataChanged=true;
+            setOptionsMenuVisibility();
+        }
+    };
 
     private View.OnClickListener chooseContragentListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DialogFragment dialogFragment = WCatalog_list_dialog.newInstance(MetaCatalogs.MContragent.CATALOG_NAME);
+            DialogFragment dialogFragment;
+            dialogFragment = WCatalog_list_dialog.newInstance(PREFIX_CATALOG+ ssaContragentType.getItem());
             dialogFragment.setTargetFragment(WDoc_Kassa_PKO_item_fragment.this,DIALOG_REQUEST_CONTRAGENT);
             dialogFragment.show(getFragmentManager(),dialogFragment.getClass().getName());
         }
@@ -304,7 +357,7 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
         DateFormatTools dft = new DateFormatTools();
         mWDoc.setNumber(evNumber.getText());
         mWDoc.setDate(dft.dateFromString(evDate.getText(),DateFormatTools.DATE_FORMAT_VID_FULL));
-        mWDoc.setContragentType(svContragentType.getWCatalogItem().getDescription());
+        mWDoc.setContragentType("Catalog_"+ ssaContragentType.getItem());
     }
 
     @Override

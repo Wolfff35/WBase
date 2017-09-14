@@ -46,8 +46,27 @@ public class MetaCatalogs {
     public static final class MDogovor {
         public static final String CATALOG_NAME = "Catalog_Договора";
         public static final class HEAD {
-            public static final String CONTRAKENT_KEY = "Контрагент_Key";
+            public static final String CONTRAGENT_KEY = "Контрагент_Key";
             public static final String ORGANIZATION_KEY = "Организация_Key";
+            //public static final String CURRENCY_KEY = "ВалютаДоговора_Key";
+            //public static final String KINDOFACTIVITY_KEY = "ВидДеятельности_Key";
+            public static final String NUMBER_DOG = "НомерДоговора";
+            public static final String DATE_DOG = "ДатаДоговора";
+        }
+        public static final class Currency_Table{
+            public static final String TABLE_NAME = "Валюты";
+            public static final class TABLE{
+                public static final String CURRENCY_DOG = "ВалютаДоговора_Key";
+            }
+
+        }
+        public static final class KindOfActivity_Table{
+            public static final String TABLE_NAME = "ВидыДеятельности";
+            public static final class TABLE{
+                public static final String KINDOFACTIVITY = "ВидДеятельности_Key";
+                public static final String DDS = "СтатьяДДС_Key";
+            }
+
         }
     }
     public static final class MBankAccount {
@@ -61,6 +80,15 @@ public class MetaCatalogs {
     }
     public static final class MAZS{
         public static final String CATALOG_NAME = "Catalog_АЗС";
+    }
+    public static final class MKindOfActivity {
+        public static final String CATALOG_NAME = "Catalog_Холдинг_ВидыДеятельности";
+        public static final class HEAD {
+            public static final String IS_VZAIMORASCH = "фВзаиморасчеты";
+            public static final String IS_AVANS = "фВзаиморасчеты_Авансы";
+            public static final String IS_BONUS = "фВзаиморасчеты_Бонусы";
+            public static final String IS_VZAIMORASCH_ZATRATA = "фВзаиморасчеты_Затраты";
+        }
     }
 
 }

@@ -15,7 +15,7 @@ import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
  * Created by wolff on 04.09.2017.
  */
 
-public class SelectView extends LinearLayout {
+public class SelectWCatalogView extends LinearLayout {
     private ImageButton btnSelSelect;
     private ImageButton btnSelClear;
     private TextView tvSelDescription;
@@ -23,22 +23,22 @@ public class SelectView extends LinearLayout {
 
     private WCatalog mItem;
 
-    public SelectView(Context context) {
+    public SelectWCatalogView(Context context) {
         super(context);
         initComponent();
     }
 
-    public SelectView(Context context, @Nullable AttributeSet attrs) {
+    public SelectWCatalogView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initComponent();
     }
 
-    public SelectView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SelectWCatalogView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initComponent();
     }
 
-    public SelectView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SelectWCatalogView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initComponent();
     }
@@ -66,7 +66,7 @@ public class SelectView extends LinearLayout {
 
      private void initComponent() {
          LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         inflater.inflate(R.layout.view_select, this);
+         inflater.inflate(R.layout.view_select_wcatalog, this);
          btnSelSelect = (ImageButton) findViewById(R.id.btnSelSelect);
          btnSelClear = (ImageButton) findViewById(R.id.btnSelClear);
          tvSelDescription = (TextView) findViewById(R.id.tvSelDescription);

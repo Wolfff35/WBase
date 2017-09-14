@@ -21,10 +21,10 @@
 
     </com.wolff.wbase.tools.custom_views.EditView>
 
-    <com.wolff.wbase.tools.custom_views.SelectView
+    <com.wolff.wbase.tools.custom_views.SelectWCatalogView
         android:id="@+id/svContragent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.wolff.wbase.tools.custom_views.SelectView>
+    </com.wolff.wbase.tools.custom_views.SelectWCatalogView>
 </LinearLayout>

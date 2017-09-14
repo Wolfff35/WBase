@@ -3,6 +3,9 @@ package com.wolff.wbase.tools;
 import android.content.Context;
 import android.util.Log;
 
+import com.wolff.wbase.model.catalogs.wDogovor.WCat_Dogovor;
+import com.wolff.wbase.model.catalogs.wDogovor.WCat_Dogovor_getter;
+
 import java.util.Date;
 
 /**
@@ -29,6 +32,12 @@ public class Debug {
             Log.e(tag, msg);
         }
     }
-
+    public static void run(Context context) {
+        WCat_Dogovor dogovor = new WCat_Dogovor_getter(context).getItem("2cdc9528-7bc2-11e5-8119-86ffdae8e6dd");
+        //dogovor.toJson(false);
+        dogovor.setDescription("rrrrrrrrrrrrrrr");
+        boolean b = dogovor.updateItem();
+        Debug.Log("UPDATE DOG"," - "+b);
+    }
 
 }

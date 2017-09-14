@@ -28,7 +28,6 @@ import static com.wolff.wbase.model.metadata.MetaCatalogs.MOrganization.HEAD.CON
 public class WCat_Organization extends WCatalog implements Serializable {
     private WCat_Contragent mContragent;
     private Context mContext;
-    private String mPrefix;
     private static final String CATALOG_TYPE = MetaCatalogs.MOrganization.CATALOG_NAME;
 
     public WCat_Organization(Context context){
@@ -39,7 +38,6 @@ public class WCat_Organization extends WCatalog implements Serializable {
         super(context,jsonObject);
         mContext=context;
         try {
-            this.mPrefix = jsonObject.getString(MetaCatalogs.MOrganization.HEAD.PREFIX);
             this.mContragent = new WCat_Contragent_getter(mContext).getItem(jsonObject.getString(CONTRAGENT_KEY));
         } catch (JSONException e) {
             e.printStackTrace();

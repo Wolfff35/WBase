@@ -30,31 +30,31 @@
 
     </LinearLayout>
 
-    <com.wolff.wbase.tools.custom_views.SelectView
+    <com.wolff.wbase.tools.custom_views.SelectWCatalogView
         android:id="@+id/svOrganization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.wolff.wbase.tools.custom_views.SelectView>
-    <com.wolff.wbase.tools.custom_views.SelectView
+    </com.wolff.wbase.tools.custom_views.SelectWCatalogView>
+    <com.wolff.wbase.tools.custom_views.SelectStringArrayView
         android:id="@+id/svContragentType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.wolff.wbase.tools.custom_views.SelectView>
+    </com.wolff.wbase.tools.custom_views.SelectStringArrayView>
 
-    <com.wolff.wbase.tools.custom_views.SelectView
+    <com.wolff.wbase.tools.custom_views.SelectWCatalogView
         android:id="@+id/svContragent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.wolff.wbase.tools.custom_views.SelectView>
-    <com.wolff.wbase.tools.custom_views.SelectView
+    </com.wolff.wbase.tools.custom_views.SelectWCatalogView>
+    <com.wolff.wbase.tools.custom_views.SelectWCatalogView
         android:id="@+id/svCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.wolff.wbase.tools.custom_views.SelectView>
+    </com.wolff.wbase.tools.custom_views.SelectWCatalogView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

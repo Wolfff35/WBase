@@ -1,6 +1,7 @@
 package com.wolff.wbase.model.documents.wDoc_Kassa_PKO;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.wolff.wbase.R;
+import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_item_activity;
 import com.wolff.wbase.model.documents.wDocument.WDocument_list_item_adapter;
 import com.wolff.wbase.model.documents.wDocument.WDocument;
 import com.wolff.wbase.model.documents.wDocument.WDocument_getter;
@@ -77,9 +79,9 @@ public class WDoc_Kassa_PKO_list_fragment extends WDocument_list_fragment {
         int id = item.getItemId();
         switch (id){
             case R.id.action_item_add:{
-                //Intent intent = WCat_Organization_item_activity.newIntent(getContext(),null);
-                //startActivity(intent);
-                Debug.Log("ADD ORG","ADDD");
+                Intent intent = WDoc_Kassa_PKO_item_activity.newIntent(getContext(),null);
+                startActivity(intent);
+                Debug.Log("ADD PKO","ADDD");
                 break;
             }
             default:

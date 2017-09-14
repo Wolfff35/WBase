@@ -19,6 +19,7 @@ import com.wolff.wbase.model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO_list_fragme
 import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 import com.wolff.wbase.model.documents.wDocument.WDocument;
 import com.wolff.wbase.model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO_item_activity;
+import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
 
@@ -49,6 +50,8 @@ public class ActivityMain extends AppCompatActivity
         mUITools = new UITools();
         mUITools.designNavigationMenu(getApplicationContext(),navigationView.getMenu());
         navigationView.setNavigationItemSelectedListener(this);
+
+        Debug.run(getApplicationContext());
 
         mMainFragment = Logo_fragment.newInstance();
         mUITools.displayFragment(this,mMainFragment);

@@ -25,6 +25,7 @@ public class MetaDocuments {
             public static final String CURRENCY_COURSE = "КурсВалюты";
             public static final String SUMMA_VAL = "СуммаВал";
             public static final String ACCOUNT_KEY = "Организация_БанковскийСчет_Key";
+            public static final String ISTABLE = "фНесколькоСтатейДДС";
 
         }
     }

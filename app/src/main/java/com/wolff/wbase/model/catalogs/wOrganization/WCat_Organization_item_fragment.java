@@ -20,7 +20,7 @@ import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.tools.Debug;
-import com.wolff.wbase.tools.custom_views.SelectView;
+import com.wolff.wbase.tools.custom_views.SelectWCatalogView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -34,7 +34,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment {
 
     private WCat_Organization mWOrganization;
 
-    private SelectView svContragent;
+    private SelectWCatalogView svContragent;
     private EditView evCode;
     private EditView evDescription;
 
@@ -61,7 +61,7 @@ public class WCat_Organization_item_fragment extends WCatalog_item_fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view =  inflater.inflate(R.layout.wcat_organization_item_fragment, container, false);
-        svContragent = (SelectView)view.findViewById(R.id.svContragent);
+        svContragent = (SelectWCatalogView)view.findViewById(R.id.svContragent);
         evCode = (EditView) view.findViewById(R.id.evCode);
         evDescription = (EditView) view.findViewById(R.id.evDescription);
 

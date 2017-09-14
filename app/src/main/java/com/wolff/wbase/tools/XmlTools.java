@@ -23,14 +23,18 @@ public class XmlTools {
         DateFormatTools dateFormat = new DateFormatTools();
         StringConvertTools convert = new StringConvertTools();
         String s_currentDate = dateFormat.dateToString(new Date(),DATE_FORMAT_STR);
-        return String.format(convert.stringFromInputStream(is_header),sObjectType,s_currentDate);
+        String s = String.format(convert.stringFromInputStream(is_header),sObjectType,s_currentDate);
+        Debug.Log("HEADER",""+s);
+        return s;
     }
 
 
     public static String formatXmlFooter(Context context){
         InputStream is_footer = context.getResources().openRawResource(R.raw.post_query_task_footer);
         StringConvertTools convert = new StringConvertTools();
-        return convert.stringFromInputStream(is_footer);
+        String s = convert.stringFromInputStream(is_footer);
+        Debug.Log("HEADER",""+s);
+        return s;
     }
 
 }
