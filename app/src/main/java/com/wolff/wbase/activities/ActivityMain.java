@@ -2,8 +2,8 @@ package com.wolff.wbase.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,20 +13,22 @@ import android.view.MenuItem;
 
 import com.wolff.wbase.R;
 import com.wolff.wbase.fragments.Logo_fragment;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_item_activity;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_list_fragment;
-import com.wolff.wbase.model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO_list_fragment;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
-import com.wolff.wbase.model.documents.wDocument.WDocument;
-import com.wolff.wbase.model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO_item_activity;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_item_activity;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_fragment;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Organization;
+import com.wolff.wbase.model.documents.wDocument.WDocument_item_activity;
+import com.wolff.wbase.model.documents.wDocument.WDocument_list_fragment;
+import com.wolff.wbase.model.documents.wDocuments.WDoc_Kassa_PKO;
+import com.wolff.wbase.model.metadata.MetaCatalogs;
+import com.wolff.wbase.model.metadata.MetaDocuments;
 import com.wolff.wbase.tools.Debug;
-import com.wolff.wbase.tools.UITools;
 import com.wolff.wbase.tools.PreferencesTools;
+import com.wolff.wbase.tools.UITools;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        WCat_Organization_list_fragment.WCat_Organization_list_fragment_listener,
-        WDoc_Kassa_PKO_list_fragment.WDoc_Kassa_PKO_list_fragment_listener{
+        WCatalog_list_fragment.WList_fragment_listener,
+        WDocument_list_fragment.WDocument_list_fragment_listener{
 
     private Fragment mMainFragment;
     private UITools mUITools;
@@ -73,12 +75,13 @@ public class ActivityMain extends AppCompatActivity
         int id = item.getItemId();
         switch (id){
             case R.id.nav_menu_item_Organization: {
-                mMainFragment = WCat_Organization_list_fragment.newInstance();
+                //mMainFragment = WCat_Organization_list_fragmentt.newInstance();
+                mMainFragment = WCatalog_list_fragment.newInstance(MetaCatalogs.MOrganization.CATALOG_NAME,WCat_Organization.class);
                 mUITools.displayFragment(this,mMainFragment);
                 break;
             }
             case R.id.nav_menu_item_PKO:{
-                mMainFragment = WDoc_Kassa_PKO_list_fragment.newInstance();
+                mMainFragment = WDocument_list_fragment.newInstance(MetaDocuments.MDoc_Kassa_PKO.DOCUMENT_NAME, WDoc_Kassa_PKO.class);
                 mUITools.displayFragment(this,mMainFragment);
 
                 break;
@@ -91,15 +94,21 @@ public class ActivityMain extends AppCompatActivity
     }
 //==================================================================================================
 
-    @Override
+/*    @Override
     public void OnWOrganizationItemSelected(WCatalog organization) {
-        Intent intent = WCat_Organization_item_activity.newIntent(getApplicationContext(),organization.getRef_Key());
+        Intent intent = WCat_Organization_item_activityy.newIntent(getApplicationContext(),organization.getRef_Key());
+        startActivity(intent);
+    }
+*/
+    @Override
+    public void OnItemSelected(String catalog_key, String objectType,Class cl) {
+        Intent intent = WCatalog_item_activity.newIntent(getApplicationContext(),catalog_key,cl);
         startActivity(intent);
     }
 
     @Override
-    public void OnWDocumentItemSelected(WDocument document) {
-        Intent intent = WDoc_Kassa_PKO_item_activity.newIntent(getApplicationContext(),document.getRef_Key());
+    public void OnWDocumentItemSelected(String doc_key, String objectType,Class cl) {
+        Intent intent = WDocument_item_activity.newIntent(getApplicationContext(),doc_key,cl);
         startActivity(intent);
     }
 }

@@ -3,13 +3,11 @@ package com.wolff.wbase.datalab;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
 import com.wolff.wbase.tools.PreferencesTools;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**

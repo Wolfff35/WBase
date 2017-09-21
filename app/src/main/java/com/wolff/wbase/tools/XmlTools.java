@@ -3,8 +3,6 @@ package com.wolff.wbase.tools;
 import android.content.Context;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.tools.DateFormatTools;
-import com.wolff.wbase.tools.StringConvertTools;
 
 import java.io.InputStream;
 import java.util.Date;

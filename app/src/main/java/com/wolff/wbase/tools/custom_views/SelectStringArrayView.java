@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 
 /**
  * Created by wolff on 04.09.2017.

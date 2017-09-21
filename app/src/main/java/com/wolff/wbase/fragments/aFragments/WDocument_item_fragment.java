@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.documents.wDocument;
+package com.wolff.wbase.fragments.aFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

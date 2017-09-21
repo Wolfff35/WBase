@@ -1,78 +1,103 @@
 package com.wolff.wbase.model.catalogs.wCatalog;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.AdapterView;
 
 import com.wolff.wbase.R;
+import com.wolff.wbase.datalab.WGetter;
+import com.wolff.wbase.tools.Debug;
+
+import java.util.ArrayList;
 
 /**
  * Created by wolff on 01.09.2017.
  */
 
-public class WCatalog_list_fragment extends Fragment implements SearchView.OnQueryTextListener {
-    protected ListView mMainListView;
-    protected SearchView mMainSearchView;
-    protected WCatalog_list_item_adapter mMainAdapter;
-    private Menu mMainOptionsMenu;
+public class WCatalog_list_fragment<WType extends WCatalog> extends WCatalog_search_list_fragment {
+    private static String OBJECT_TYPE = "Obj_Type";
+    private static String OBJECT_CLASS = "Obj_class";
+    private Class <? extends WType> mClass;
+    private String mObjectType;
+
+    private ArrayList<WType> mList;
+    private WList_fragment_listener listener1;
+
+    public interface WList_fragment_listener{
+        void OnItemSelected(String catalog_key,String objectType,Class cl);
+    }
+
+    public static WCatalog_list_fragment newInstance(String objectType, Class<?> wClass){
+        Bundle args = new Bundle();
+        args.putString(OBJECT_TYPE,objectType);
+        args.putSerializable(OBJECT_CLASS,wClass);
+        WCatalog_list_fragment fragm = new WCatalog_list_fragment();
+        fragm.setArguments(args);
+        return fragm;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-       }
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view =  inflater.inflate(R.layout.wcatalog_list_fragment,container,false);
-        mMainListView = (ListView)view.findViewById(R.id.lvMain);
-        mMainSearchView = (SearchView) view.findViewById(R.id.etSearchItem);
-        setupSearchView();
-
-        setHasOptionsMenu(true);
-        return view;
-
-    }
-    private void setupSearchView() {
-        mMainSearchView.setIconifiedByDefault(false);
-        mMainSearchView.setOnQueryTextListener(this);
-        mMainSearchView.setSubmitButtonEnabled(true);
-        mMainSearchView.setQueryHint("Поиск");
+        mObjectType = getArguments().getString(OBJECT_TYPE);
+        mClass = (Class)getArguments().getSerializable(OBJECT_CLASS);
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        mMainAdapter.getFilter().filter(newText);
-        return true;
+    public void onResume() {
+        super.onResume();
+        mList = new WGetter<>(getContext(),mObjectType,mClass).getList();
+        fillData();
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        fillData();
+        getActivity().setTitle("Организации");
+    }
+
+    private void fillData(){
+        mMainAdapter = new WCatalog_list_item_adapter(getContext(), (ArrayList<WCatalog>) mList);
+        mMainListView.setAdapter(mMainAdapter);
+        mMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener1.OnItemSelected(mList.get(position).getRef_Key(),mObjectType,mClass);
+            }
+        });
+        mMainListView.setTextFilterEnabled(true);
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener1 = (WList_fragment_listener) context;
     }
-//--------------------------------------------------------------------------------------------------]
-@Override
-public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    this.mMainOptionsMenu = menu;
-    inflater.inflate(R.menu.menu_list_options, mMainOptionsMenu);
-    super.onCreateOptionsMenu(mMainOptionsMenu,inflater);
-}
+
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        //MenuItem mi = menu.findItem(R.id.action_import_item);
-        //mi.setVisible(false);
-        super.onPrepareOptionsMenu(menu);
+    public void onDetach() {
+        super.onDetach();
+        listener1=null;
     }
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_item_add:{
+                Intent intent = WCatalog_item_activity.newIntent(getContext(),null,mClass);
+                startActivity(intent);
+                break;
+            }
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

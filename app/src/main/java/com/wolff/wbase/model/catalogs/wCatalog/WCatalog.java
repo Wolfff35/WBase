@@ -27,7 +27,7 @@ public class WCatalog extends WObject implements Serializable {
     private String mParentKey;
     private boolean mIsFolder;
 
-    public WCatalog(){
+     public WCatalog(){
         super();
     }
 

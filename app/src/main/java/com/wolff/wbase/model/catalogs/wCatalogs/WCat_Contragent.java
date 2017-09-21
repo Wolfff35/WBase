@@ -1,16 +1,13 @@
-package com.wolff.wbase.model.catalogs.wOrganization;
+package com.wolff.wbase.model.catalogs.wCatalogs;
 
 import android.content.Context;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.tools.Const;
-import com.wolff.wbase.tools.XmlTools;
 import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.StringConvertTools;
+import com.wolff.wbase.tools.XmlTools;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,43 +16,40 @@ import java.io.Serializable;
 
 import static com.wolff.wbase.datalab.OnlineConnector.CONNECTION_TYPE_PATCH;
 import static com.wolff.wbase.datalab.OnlineConnector.CONNECTION_TYPE_POST;
-import static com.wolff.wbase.model.metadata.MetaCatalogs.MOrganization.HEAD.CONTRAGENT_KEY;
 
 /**
- * Created by wolff on 01.09.2017.
+ * Created by wolff on 28.08.2017.
  */
 
-public class WCat_Organization extends WCatalog implements Serializable {
-    private WCat_Contragent mContragent;
+public class WCat_Contragent extends WCatalog implements Serializable {
+    private String name_short;
+    private String name_full;
     private Context mContext;
-    private static final String CATALOG_TYPE = MetaCatalogs.MOrganization.CATALOG_NAME;
 
-    public WCat_Organization(Context context){
-        mContext=context;
+    private static final String CATALOG_TYPE = MetaCatalogs.MContragent.CATALOG_NAME;
+
+    public WCat_Contragent(Context context){
+        this.mContext = context;
     }
-
-    public WCat_Organization(Context context, JSONObject jsonObject) {
+    public WCat_Contragent(Context context,JSONObject jsonObject) {
         super(context,jsonObject);
-        mContext=context;
+        this.mContext=context;
         try {
-            this.mContragent = new WCat_Contragent_getter(mContext).getItem(jsonObject.getString(CONTRAGENT_KEY));
+            this.name_short = jsonObject.getString(MetaCatalogs.MContragent.HEAD.NAME_SHORT);
+            this.name_full = jsonObject.getString(MetaCatalogs.MContragent.HEAD.NAME_FULL);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Debug.Log("CREATE ORG",""+this.getRef_Key()+"; "+this.getDescription());
+        Debug.Log("CREATE CONTRAGENT",""+this.getRef_Key()+"; "+this.getDescription());
+
     }
-
-
     @Override
     public JSONObject toJson(boolean onlyDeletionMark) {
         JSONObject item = super.toJson(onlyDeletionMark);
         if(!onlyDeletionMark) {
             try {
-                if (mContragent != null) {
-                    item.put(CONTRAGENT_KEY, mContragent.getRef_Key());
-                }else {
-                    item.put(CONTRAGENT_KEY, Const.NULL_REF);
-                }
+                item.put(MetaCatalogs.MContragent.HEAD.NAME_FULL,this.name_full);
+                item.put(MetaCatalogs.MContragent.HEAD.NAME_SHORT,this.name_short);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -64,15 +58,23 @@ public class WCat_Organization extends WCatalog implements Serializable {
         return item;
     }
 
-    public WCat_Contragent getContragent() {
-        return mContragent;
+    public String getName_short() {
+        return name_short;
     }
 
-    public void setContragent(WCat_Contragent contragent) {
-        mContragent = contragent;
+    public void setName_short(String name_short) {
+        this.name_short = name_short;
     }
 
- //=================================================================================================
+    public String getName_full() {
+        return name_full;
+    }
+
+    public void setName_full(String name_full) {
+        this.name_full = name_full;
+    }
+
+    //=================================================================================================
     @Override
     public boolean addNewItem(){
         OnlineDataSender dataLab = OnlineDataSender.get(mContext);
@@ -98,9 +100,8 @@ public class WCat_Organization extends WCatalog implements Serializable {
     @Override
     protected StringBuffer formatXmlBody() {
         StringBuffer sb = super.formatXmlBody();
-        if (getContragent() != null) {
-            StringConvertTools.addFieldToXml(sb, CONTRAGENT_KEY, getContragent().getRef_Key());
-        }
+        StringConvertTools.addFieldToXml(sb, MetaCatalogs.MContragent.HEAD.NAME_FULL, getName_full());
+        StringConvertTools.addFieldToXml(sb, MetaCatalogs.MContragent.HEAD.NAME_SHORT, getName_short());
         Debug.Log("formatXmlBody",""+sb.toString());
         return sb;
     }

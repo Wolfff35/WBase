@@ -1,21 +1,12 @@
-package com.wolff.wbase.model.catalogs.wDogovor;
+package com.wolff.wbase.model.catalogs.wCatalogs;
 
 import android.content.Context;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
+import com.wolff.wbase.datalab.WGetter;
 import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency_getter;
-import com.wolff.wbase.model.catalogs.wKindOfActivity.WCat_KindOfActivity;
-import com.wolff.wbase.model.catalogs.wKindOfActivity.WCat_KindOfActivity_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_getter;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
-import com.wolff.wbase.tools.Const;
 import com.wolff.wbase.tools.Debug;
-import com.wolff.wbase.tools.StringConvertTools;
 import com.wolff.wbase.tools.XmlTools;
 
 import org.json.JSONArray;
@@ -42,7 +33,8 @@ public class WCat_Dogovor extends WCatalog implements Serializable {
         Currency_Table_row(Context context,JSONObject jsonObject){
             try {
                 this.mLineNumber = jsonObject.getInt("LineNumber");
-                this.mCurrency = new WCat_Currency_getter(context).getItem(jsonObject.getString(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG));
+                //this.mCurrency = new WCat_Currency_getterr(context).getItem(jsonObject.getString(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG));
+                this.mCurrency = new WGetter<>(context,MetaCatalogs.MCurrency.CATALOG_NAME,WCat_Currency.class).getItem(jsonObject.getString(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -63,7 +55,9 @@ public class WCat_Dogovor extends WCatalog implements Serializable {
         private WCat_KindOfActivity mKindOfActivity;
         KindOfActivity_Table_row(Context context,JSONObject jsonObject){
             try {
-                this.mKindOfActivity = new WCat_KindOfActivity_getter(context).getItem(jsonObject.getString(MetaCatalogs.MDogovor.KindOfActivity_Table.TABLE.KINDOFACTIVITY));
+                //this.mKindOfActivity = new WCat_KindOfActivity_getterr(context).getItem(jsonObject.getString(MetaCatalogs.MDogovor.KindOfActivity_Table.TABLE.KINDOFACTIVITY));
+                this.mKindOfActivity = new WGetter<>(context,MetaCatalogs.MKindOfActivity.CATALOG_NAME,WCat_KindOfActivity.class)
+                        .getItem(jsonObject.getString(MetaCatalogs.MDogovor.KindOfActivity_Table.TABLE.KINDOFACTIVITY));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -88,8 +82,10 @@ public class WCat_Dogovor extends WCatalog implements Serializable {
         super(context,jsonObject);
         mContext=context;
         try {
-            this.mOrganization = new WCat_Organization_getter(mContext).getItem(jsonObject.getString(ORGANIZATION_KEY));
-            this.mContragent = new WCat_Contragent_getter(mContext).getItem(jsonObject.getString(CONTRAGENT_KEY));
+            //this.mOrganization = new WCat_Organization_getterr(mContext).getItem(jsonObject.getString(ORGANIZATION_KEY));
+            this.mOrganization = new WGetter<>(mContext,MetaCatalogs.MOrganization.CATALOG_NAME,WCat_Organization.class).getItem(jsonObject.getString(ORGANIZATION_KEY));
+            //this.mContragent = new WCat_Contragent_getterr(mContext).getItem(jsonObject.getString(CONTRAGENT_KEY));
+            this.mContragent = new WGetter<>(mContext,MetaCatalogs.MContragent.CATALOG_NAME,WCat_Contragent.class).getItem(jsonObject.getString(CONTRAGENT_KEY));
             JSONArray jsonArrayCurrency = jsonObject.getJSONArray(MetaCatalogs.MDogovor.Currency_Table.TABLE_NAME);
             JSONArray jsonArrayKind = jsonObject.getJSONArray(MetaCatalogs.MDogovor.KindOfActivity_Table.TABLE_NAME);
 

@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.catalogs.wCurrency;
+package com.wolff.wbase.model.catalogs.wCatalogs;
 
 import android.content.Context;
 

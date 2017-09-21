@@ -1,15 +1,15 @@
-package com.wolff.wbase.model.documents.wDoc_Kassa_PKO;
+package com.wolff.wbase.model.documents.wDocuments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.wolff.wbase.datalab.OnlineDataSender;
+import com.wolff.wbase.datalab.WGetter;
+import com.wolff.wbase.fragments.itemFragments.WDoc_Kassa_PKO_item_fragment;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Contragent;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Currency;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Organization;
 import com.wolff.wbase.model.documents.wDocument.WDocument;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_getter;
 import com.wolff.wbase.model.metadata.MetaCatalogs;
 import com.wolff.wbase.model.metadata.MetaDocuments;
 import com.wolff.wbase.tools.DateFormatTools;
@@ -59,9 +59,9 @@ public class WDoc_Kassa_PKO extends WDocument {
         super(context, jsonObject);
         mContext = context;
         try {
-            this.mOrganization = new WCat_Organization_getter(mContext).getItem(jsonObject.getString(ORGANIZATION_KEY));
-            this.mContragent = new WCat_Contragent_getter(mContext).getItem(jsonObject.getString(CONTRAGENT_KEY));
-            this.mCurrency = new WCat_Currency_getter(mContext).getItem(jsonObject.getString(CURRENCY_KEY));
+            this.mOrganization = new WGetter<>(mContext,MetaCatalogs.MOrganization.CATALOG_NAME,WCat_Organization.class).getItem(jsonObject.getString(ORGANIZATION_KEY));
+            this.mContragent = new WGetter<>(mContext,MetaCatalogs.MContragent.CATALOG_NAME,WCat_Contragent.class).getItem(jsonObject.getString(CONTRAGENT_KEY));
+            this.mCurrency = new WGetter<>(context,MetaCatalogs.MCurrency.CATALOG_NAME,WCat_Currency.class).getItem(jsonObject.getString(CURRENCY_KEY));
             this.mContragentType = jsonObject.getString(CONTRAGENT_TYPE).replace(STANDARD_ODATA,"");
             this.mCurrencyCourse = jsonObject.getDouble(CURRENCY_COURSE);
             this.mSummaVal = jsonObject.getDouble(SUMMA_VAL);
@@ -71,6 +71,10 @@ public class WDoc_Kassa_PKO extends WDocument {
                e.printStackTrace();
         }
         Debug.Log("CREATE DOC PKO", "" + this.getRef_Key() + "; " + this.getNumber());
+    }
+
+    public static Fragment getItemFragment(String item_key) {
+        return WDoc_Kassa_PKO_item_fragment.newInstance(item_key);
     }
 
     @Override

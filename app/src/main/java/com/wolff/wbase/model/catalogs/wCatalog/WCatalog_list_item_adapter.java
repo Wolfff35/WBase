@@ -10,7 +10,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
 import com.wolff.wbase.tools.Debug;
 
 import java.util.ArrayList;

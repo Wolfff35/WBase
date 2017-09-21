@@ -1,7 +1,6 @@
 package com.wolff.wbase.datalab;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.wolff.wbase.tools.Debug;
 

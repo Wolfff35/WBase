@@ -10,7 +10,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.documents.wDocument.WDocument;
 import com.wolff.wbase.tools.DateFormatTools;
 import com.wolff.wbase.tools.Debug;
 

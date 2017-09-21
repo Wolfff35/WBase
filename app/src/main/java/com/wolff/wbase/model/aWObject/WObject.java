@@ -1,6 +1,7 @@
 package com.wolff.wbase.model.aWObject;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.wolff.wbase.tools.StringConvertTools;
 
@@ -17,11 +18,12 @@ import static com.wolff.wbase.model.metadata.MetaCatalogs.MObject.HEAD.REF_KEY;
  * Created by wolff on 16.08.2017.
  */
 
-public abstract class WObject extends AWObject implements Serializable{
+public class WObject extends AWObject implements Serializable{
     //private static final long serialVersionUID = 2163051469151804397L;
     private String mRef_Key;
     private String mDataVersion;
     private boolean mDeletionMark;
+
 
     public WObject(){}
     public WObject (Context context,JSONObject userJsonObject){
@@ -32,7 +34,6 @@ public abstract class WObject extends AWObject implements Serializable{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -48,10 +49,29 @@ public abstract class WObject extends AWObject implements Serializable{
     }
 
     @Override
+    public boolean addNewItem() {
+        return false;
+    }
+
+    @Override
     protected StringBuffer formatXmlBody() {
         StringBuffer sb = new StringBuffer();
         StringConvertTools.addFieldToXml(sb, DELETION_MARK, String.valueOf(isDeletionMark()));
         return sb;
+    }
+
+    @Override
+    public boolean updateItem() {
+        return false;
+    }
+
+    @Override
+    public boolean deleteItem() {
+        return false;
+    }
+
+    public static Fragment getItemFragment(String item_key) {
+        return null;
     }
 
     //==================================================================================================
@@ -59,11 +79,8 @@ public abstract class WObject extends AWObject implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof WObject)) return false;
-
         WObject wObject = (WObject) o;
-
         return getRef_Key() != null ? getRef_Key().equals(wObject.getRef_Key()) : wObject.getRef_Key() == null;
-
     }
 
     public String getRef_Key() {
@@ -85,6 +102,7 @@ public abstract class WObject extends AWObject implements Serializable{
     public String getDataVersion() {
         return mDataVersion;
     }
+
 
     public void setDataVersion(String dataVersion) {
         mDataVersion = dataVersion;

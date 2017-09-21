@@ -1,79 +1,103 @@
 package com.wolff.wbase.model.documents.wDocument;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.AdapterView;
 
 import com.wolff.wbase.R;
+import com.wolff.wbase.datalab.WGetter;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_item_activity;
+import com.wolff.wbase.tools.Debug;
+
+import java.util.ArrayList;
 
 /**
- * Created by wolff on 11.09.2017.
+ * Created by wolff on 01.09.2017.
  */
 
-public class WDocument_list_fragment extends Fragment implements SearchView.OnQueryTextListener {
-    protected ListView mMainListView;
-    protected SearchView mMainSearchView;
-    protected WDocument_list_item_adapter mMainAdapter;
-    private Menu mMainOptionsMenu;
+public class WDocument_list_fragment<WType extends WDocument> extends WDocument_search_list_fragment {
+    private static String OBJECT_TYPE = "Obj_Type";
+    private static String OBJECT_CLASS = "Obj_class";
+    private Class <? extends WType> mClass;
+    private String mObjectType;
 
+    private ArrayList<WType> mDocList;
+    private WDocument_list_fragment_listener listener1;
+
+    public interface WDocument_list_fragment_listener{
+        void OnWDocumentItemSelected(String doc_key,String objectType,Class class1);
+    }
+
+    public static WDocument_list_fragment newInstance(String objectType, Class<?> wClass){
+        Bundle args = new Bundle();
+        args.putString(OBJECT_TYPE,objectType);
+        args.putSerializable(OBJECT_CLASS,wClass);
+        WDocument_list_fragment fragm = new WDocument_list_fragment();
+        fragm.setArguments(args);
+        return fragm;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-    }
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view =  inflater.inflate(R.layout.wcatalog_list_fragment,container,false);
-        mMainListView = (ListView)view.findViewById(R.id.lvMain);
-        mMainSearchView = (SearchView) view.findViewById(R.id.etSearchItem);
-        setupSearchView();
-
-        setHasOptionsMenu(true);
-        return view;
-
-    }
-    private void setupSearchView() {
-        mMainSearchView.setIconifiedByDefault(false);
-        mMainSearchView.setOnQueryTextListener(this);
-        mMainSearchView.setSubmitButtonEnabled(true);
-        mMainSearchView.setQueryHint("Поиск");
+        mObjectType = getArguments().getString(OBJECT_TYPE);
+        mClass = (Class)getArguments().getSerializable(OBJECT_CLASS);
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        mMainAdapter.getFilter().filter(newText);
-        return true;
+    public void onResume() {
+        super.onResume();
+        mDocList = new WGetter<>(getContext(),mObjectType,mClass).getList();
+        fillData();
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //getActivity().getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        fillData();
+        getActivity().setTitle("ПКО");
+    }
+
+    private void fillData(){
+        mMainAdapter = new WDocument_list_item_adapter(getContext(),  (ArrayList<WDocument>) mDocList);
+        mMainListView.setAdapter(mMainAdapter);
+        mMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener1.OnWDocumentItemSelected(mDocList.get(position).getRef_Key(),mObjectType,mClass);
+            }
+        });
+        mMainListView.setTextFilterEnabled(true);
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-    //--------------------------------------------------------------------------------------------------]
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        this.mMainOptionsMenu = menu;
-        inflater.inflate(R.menu.menu_list_options, mMainOptionsMenu);
-        super.onCreateOptionsMenu(mMainOptionsMenu,inflater);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener1 = (WDocument_list_fragment_listener) context;
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        //MenuItem mi = menu.findItem(R.id.action_import_item);
-        //mi.setVisible(false);
-        super.onPrepareOptionsMenu(menu);
+    public void onDetach() {
+        super.onDetach();
+        listener1=null;
     }
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_item_add:{
+                Intent intent = WDocument_item_activity.newIntent(getContext(),null,mClass);
+                startActivity(intent);
+                break;
+            }
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

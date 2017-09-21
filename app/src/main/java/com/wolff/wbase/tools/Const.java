@@ -1,7 +1,5 @@
 package com.wolff.wbase.tools;
 
-import com.wolff.wbase.tools.StringConvertTools;
-
 /**
  * Created by wolff on 30.08.2017.
  */

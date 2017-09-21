@@ -1,4 +1,4 @@
-package com.wolff.wbase.model.documents.wDoc_Kassa_PKO;
+package com.wolff.wbase.fragments.itemFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,20 +14,20 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency;
-import com.wolff.wbase.model.catalogs.wCurrency.WCat_Currency_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization_getter;
+import com.wolff.wbase.datalab.WGetter;
+import com.wolff.wbase.fragments.aFragments.WDocument_item_fragment;
+import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_dialog;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Contragent;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Currency;
+import com.wolff.wbase.model.catalogs.wCatalogs.WCat_Organization;
+import com.wolff.wbase.model.documents.wDocuments.WDoc_Kassa_PKO;
+import com.wolff.wbase.model.metadata.MetaCatalogs;
+import com.wolff.wbase.model.metadata.MetaDocuments;
 import com.wolff.wbase.tools.DateFormatTools;
+import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.custom_views.EditView;
 import com.wolff.wbase.tools.custom_views.SelectStringArrayView;
 import com.wolff.wbase.tools.custom_views.SelectWCatalogView;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_dialog;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent;
-import com.wolff.wbase.model.catalogs.wContragent.WCat_Contragent_getter;
-import com.wolff.wbase.model.catalogs.wOrganization.WCat_Organization;
-import com.wolff.wbase.model.documents.wDocument.WDocument_item_fragment;
-import com.wolff.wbase.model.metadata.MetaCatalogs;
-import com.wolff.wbase.tools.Debug;
 import com.wolff.wbase.tools.dialogs.String_list_dialog;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import static com.wolff.wbase.tools.Const.PREFIX_CATALOG;
  */
 
 public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
-    public static final String ORG_ITEM_ARG = "W_PKO";
+    public static final String ITEM_ARG = "W_PKO";
     private static final int DIALOG_REQUEST_ORGANIZATION = 1;
     private static final int DIALOG_REQUEST_CONTRAGENT_TYPE = 2;
     private static final int DIALOG_REQUEST_CONTRAGENT = 3;
@@ -66,7 +66,7 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
 
     public static WDoc_Kassa_PKO_item_fragment newInstance(String item_key){
         Bundle args = new Bundle();
-        args.putSerializable(ORG_ITEM_ARG,item_key);
+        args.putSerializable(ITEM_ARG,item_key);
         WDoc_Kassa_PKO_item_fragment fragment = new WDoc_Kassa_PKO_item_fragment();
         fragment.setArguments(args);
         return fragment;
@@ -78,9 +78,9 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
         mContrsgentTypes.add(MetaCatalogs.MContragent.CATALOG_NAME.replace(PREFIX_CATALOG,""));
         mContrsgentTypes.add(MetaCatalogs.MAZS.CATALOG_NAME.replace(PREFIX_CATALOG,""));
 
-        String item_key = getArguments().getString(ORG_ITEM_ARG);
+        String item_key = getArguments().getString(ITEM_ARG);
         if(item_key!=null&&!item_key.isEmpty()){
-            mWDoc = new WDoc_Kassa_PKO_getter(getContext()).getItem(item_key);
+            mWDoc = new WGetter<>(getContext(), MetaDocuments.MDoc_Kassa_PKO.DOCUMENT_NAME,WDoc_Kassa_PKO.class).getItem(item_key);
         }
         if(mWDoc==null){
             mWDoc = new WDoc_Kassa_PKO(getContext());
@@ -159,7 +159,9 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
             switch (requestCode) {
                 case DIALOG_REQUEST_ORGANIZATION: {
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
-                    WCat_Organization organization = new WCat_Organization_getter(getContext()).getItem(guid);
+                    //WCat_Organization organization = new WCat_Organization_getterr(getContext()).getItem(guid);
+                    WCat_Organization organization = new WGetter<>(getContext(),MetaCatalogs.MOrganization.CATALOG_NAME,WCat_Organization.class).getItem(guid);
+
                     mWDoc.setOrganization(organization);
                     svOrganization.setWCatalogItem(mWDoc.getOrganization());
                     mIsDataChanged = true;
@@ -171,11 +173,12 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
                     switch ("Catalog_"+ ssaContragentType.getItem()){
                         case MetaCatalogs.MContragent.CATALOG_NAME:
-                            WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
+                            //WCat_Contragent contragent = new WCat_Contragent_getterr(getContext()).getItem(guid);
+                            WCat_Contragent contragent = new WGetter<>(getContext(),MetaCatalogs.MContragent.CATALOG_NAME,WCat_Contragent.class).getItem(guid);
                             mWDoc.setContragent(contragent);
                             break;
                         case MetaCatalogs.MAZS.CATALOG_NAME:
-                            //WCat_Contragent contragent = new WCat_Contragent_getter(getContext()).getItem(guid);
+                            //WCat_Contragent contragent = new WCat_Contragent_getterr(getContext()).getItem(guid);
                             //mWDoc.setContragent(contragent);
                             break;
                     }
@@ -200,7 +203,9 @@ public class WDoc_Kassa_PKO_item_fragment extends WDocument_item_fragment {
                 }
                 case DIALOG_REQUEST_CURRENCY: {
                     String guid = data.getStringExtra(WCatalog_list_dialog.CATALOG_DIALOG_RESULT);
-                    WCat_Currency currency = new WCat_Currency_getter(getContext()).getItem(guid);
+                    //WCat_Currency currency = new WCat_Currency_getterr(getContext()).getItem(guid);
+                    WCat_Currency currency = new WGetter<>(getContext(),MetaCatalogs.MCurrency.CATALOG_NAME,WCat_Currency.class).getItem(guid);
+
                     mWDoc.setCurrency(currency);
                     svCurrency.setWCatalogItem(mWDoc.getCurrency());
                     mIsDataChanged = true;

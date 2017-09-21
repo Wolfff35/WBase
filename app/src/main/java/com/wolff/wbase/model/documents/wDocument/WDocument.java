@@ -29,17 +29,19 @@ public class WDocument extends WObject implements Serializable{
     //}
      public WDocument(Context context) {
      }
+
      public WDocument(Context context,JSONObject jsonObject) {
-        super(context,jsonObject);
-        try {
-            DateFormatTools dft = new DateFormatTools();
-            this.setDate(dft.dateFromString(jsonObject.getString(DATE),DateFormatTools.DATE_FORMAT_STR));
-            this.setNumber(jsonObject.getString(NUMBER));
-            this.setPosted(jsonObject.getBoolean(POSTED));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+         super(context, jsonObject);
+         try {
+             DateFormatTools dft = new DateFormatTools();
+             this.setDate(dft.dateFromString(jsonObject.getString(DATE), DateFormatTools.DATE_FORMAT_STR));
+             this.setNumber(jsonObject.getString(NUMBER));
+             this.setPosted(jsonObject.getBoolean(POSTED));
+         } catch (JSONException e) {
+             e.printStackTrace();
+         }
+     }
+
 
     @Override
     public JSONObject toJson(boolean onlyDeletionMark) {

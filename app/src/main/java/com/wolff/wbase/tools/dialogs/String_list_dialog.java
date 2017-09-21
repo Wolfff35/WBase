@@ -14,13 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import com.wolff.wbase.R;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_getter;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_dialog;
-import com.wolff.wbase.model.catalogs.wCatalog.WCatalog_list_item_adapter;
 
 import java.util.ArrayList;
 
@@ -63,7 +58,7 @@ public class String_list_dialog  extends DialogFragment {
         mMainView = LayoutInflater.from(mContext).inflate(R.layout.wcatalog_list_fragment,null);
         mMainListView = (ListView)mMainView.findViewById(R.id.lvMain);
 
-        //final ArrayList<WCatalog> listCatalog = new WCatalog_getter(mContext).getList(mCatalogType);
+        //final ArrayList<WCatalog> listCatalog = new WCatalog_getterr(mContext).getList(mCatalogType);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //mMainAdapter = new WCatalog_list_item_adapter(mContext, listCatalog);
         mMainAdapter = new ArrayAdapter(mContext,android.R.layout.simple_list_item_1,mCatalog);

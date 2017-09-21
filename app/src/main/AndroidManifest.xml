@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".model.catalogs.wOrganization.WCat_Organization_item_activity"
+        <activity android:name=".model.catalogs.wCatalog.WCatalog_item_activity"
                   android:parentActivityName=".activities.ActivityMain"/>
-        <activity android:name=".model.documents.wDoc_Kassa_PKO.WDoc_Kassa_PKO_item_activity"
+        <activity android:name=".model.documents.wDocument.WDocument_item_activity"
                   android:parentActivityName=".activities.ActivityMain"/>
     </application>
 
