@@ -49,8 +49,8 @@ public class WCat_Organization extends WCatalog  implements  Serializable {
 
     public static Fragment getItemFragment(String item_key){
         return WCat_Organization_item_fragment.newInstance(item_key);
-
     }
+
     @Override
     public JSONObject toJson(boolean onlyDeletionMark) {
         JSONObject item = super.toJson(onlyDeletionMark);

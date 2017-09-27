@@ -126,6 +126,17 @@ public boolean postObjectOnline(String typeConnection,String sObjectType, String
                 isSuccess = true;
             }else {
                 Debug.Log("post_ObjectOnline","requestCode = "+code);
+                Debug.Log("post_ObjectOnline","message = "+connection.getResponseMessage());
+
+                byte[] bytes = new byte[1000];
+
+                StringBuilder x = new StringBuilder();
+
+                int numRead = 0;
+                while ((numRead = connection.getErrorStream().read(bytes)) >= 0) {
+                    x.append(new String(bytes, 0, numRead));
+                }
+                Debug.Log("post_ObjectOnline","error = "+x.toString());
             }
             connection.disconnect();
         } catch (IOException e) {

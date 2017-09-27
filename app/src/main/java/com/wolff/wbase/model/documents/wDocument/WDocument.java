@@ -48,7 +48,8 @@ public class WDocument extends WObject implements Serializable{
         JSONObject item = super.toJson(onlyDeletionMark);
         if(!onlyDeletionMark) {
             try {
-                item.put(DATE, mDate);
+                DateFormatTools dft = new DateFormatTools();
+                item.put(DATE, dft.dateToString(mDate,DateFormatTools.DATE_FORMAT_STR));
                 item.put(NUMBER, mNumber);
                 item.put(POSTED, mPosted);
             } catch (JSONException e) {

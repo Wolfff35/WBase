@@ -33,13 +33,12 @@ public class WCat_Dogovor extends WCatalog implements Serializable {
         Currency_Table_row(Context context,JSONObject jsonObject){
             try {
                 this.mLineNumber = jsonObject.getInt("LineNumber");
-                //this.mCurrency = new WCat_Currency_getterr(context).getItem(jsonObject.getString(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG));
                 this.mCurrency = new WGetter<>(context,MetaCatalogs.MCurrency.CATALOG_NAME,WCat_Currency.class).getItem(jsonObject.getString(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        protected JSONObject toJson(String parentKey){
+        protected JSONObject toJson(){
             JSONObject row = new JSONObject();
             try {
                 row.put(MetaCatalogs.MDogovor.Currency_Table.TABLE.CURRENCY_DOG,mCurrency.getRef_Key());
@@ -122,7 +121,8 @@ public class WCat_Dogovor extends WCatalog implements Serializable {
                 }
                 JSONArray currArray = new JSONArray();
                 for (int i=0;i<mCurrencyTable.size();i++){
-                    JSONObject jj = mCurrencyTable.get(i).toJson(getRef_Key());
+                    //JSONObject jj = mCurrencyTable.get(i).toJson(getRef_Key());
+                    JSONObject jj = mCurrencyTable.get(i).toJson();
                     currArray.put(jj);
                 }
                 item.put(MetaCatalogs.MDogovor.Currency_Table.TABLE_NAME,currArray);

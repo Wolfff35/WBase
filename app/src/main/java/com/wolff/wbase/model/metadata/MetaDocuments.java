@@ -27,6 +27,18 @@ public class MetaDocuments {
             public static final String ACCOUNT_KEY = "Организация_БанковскийСчет_Key";
             public static final String ISTABLE = "фНесколькоСтатейДДС";
 
+            public static final String TABLE_NAME = "Состав";
+
+        }
+        public static final class TABLE{
+            public static final String LINENUMBER = "LineNumber";
+            public static final String DDS = "СтатьяДДС_Key";
+            public static final String SUMMA_VAL = "СуммаВал";
+            public static final String KINDOFACT = "ВидДеятельности_Key";
+            public static final String DOP_TYPE = "ОбъектДополнительногоУчетаПодразделения_Type";
+            public static final String DOP_OBJECT = "ОбъектДополнительногоУчетаПодразделения";
+            public static final String PODRAZDEL = "Подразделение_Key";
+
         }
     }
 }

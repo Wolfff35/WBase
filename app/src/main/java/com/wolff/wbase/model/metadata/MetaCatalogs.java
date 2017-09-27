@@ -43,6 +43,13 @@ public class MetaCatalogs {
     public static final class MCurrency{
         public static final String CATALOG_NAME = "Catalog_Валюты";
      }
+    public static final class MDDS{
+        public static final String CATALOG_NAME = "Catalog_СтатьиДДС";
+    }
+    public static final class MPodrazdelenie{
+        public static final String CATALOG_NAME = "Catalog_Холдинг_Подразделения";
+    }
+
     public static final class MDogovor {
         public static final String CATALOG_NAME = "Catalog_Договора";
         public static final class HEAD {
